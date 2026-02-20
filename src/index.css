@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.startBtn{
+    cursor: pointer;
+}
+.likeCommentShare .like a:hover,
+.likeCommentShare .comment a:hover,
+.likeCommentShare .share a:hover{
+background-color: rgb(6, 83, 83);
+  transition: background-color 0.3s ease;
+
+
+}
