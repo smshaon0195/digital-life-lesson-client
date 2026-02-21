@@ -11,6 +11,7 @@ import Pricing from "../../../Pages/Pricing/Pricing";
 import Dashboard from "../../../Pages/Dashboard/Dashboard";
 import Profile from "../../../Pages/Profile/Profile";
 import Favorites from "../../../Pages/Favorites/Favorites";
+import LessonDetails from "../../../Pages/LessonDetails/LessonDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -73,7 +74,12 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/lesson-Details",
+        path: "/lesson-Details/:id",
+        element: (
+          <PrivateRoute>
+            <LessonDetails></LessonDetails>
+          </PrivateRoute>
+        ),
       },
     ],
   },

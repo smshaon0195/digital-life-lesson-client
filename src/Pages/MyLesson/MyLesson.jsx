@@ -1,84 +1,143 @@
-import React from "react";
+import React, { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { BsThreeDots } from "react-icons/bs";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment, FaShare } from "react-icons/fa";
-import { FcDislike, FcLike } from "react-icons/fc";
 import { Link } from "react-router";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const MyLesson = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
+
+  const [editLessonId, setEditLessonId] = useState(null);
+  const [editText, setEditText] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // 🔹 Fetch ONLY my posts
+  const { data: lessons = [], isLoading } = useQuery({
+    queryKey: ["my-posts", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/posts?email=${user.email}`);
+      return res.data;
+    },
+  });
+
+
+  // 🔹 Like
+  const handleLike = async (id, liked) => {
+    await axiosSecure.patch(`/posts/like/${id}`, { liked });
+    queryClient.invalidateQueries(["my-posts"]);
+  };
+
+  // 🔹 Open edit modal
+  const handleEditPrompt = (lesson) => {
+    setEditLessonId(lesson._id);
+    setEditText(lesson.text);
+    setIsEditModalOpen(true);
+  };
+
+  // 🔹 Update lesson
+  const handleUpdateLesson = async () => {
+    await axiosSecure.patch(`/posts/${editLessonId}`, {
+      text: editText,
+    });
+
+    setIsEditModalOpen(false);
+    setEditLessonId(null);
+    setEditText("");
+    queryClient.invalidateQueries(["my-posts"]);
+  };
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
+
   return (
-    <div>
-      <div className="my-5 w-[95%] mx-auto p-5 rounded-xl bg-gray-800">
-        <div className="parent ">
-          <div className="nameDate flex gap-3 items-center ">
-            <div className="profilePhoto">
-              <img className="w-10 h-10 bg-white rounded-full" src="" alt="" />
-            </div>
+    <div className="max-w-2xl mx-auto">
+      {lessons.map((lesson) => (
+        <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white relative">
+          {/* ⋮ Edit */}
+          <span
+            onClick={() => handleEditPrompt(lesson)}
+            className="absolute right-4 top-3 cursor-pointer"
+          >
+            <BsThreeDots />
+          </span>
+
+          {/* User Info */}
+          <div className="flex gap-3 items-center mb-3">
+            <img className="w-10 h-10 rounded-full" src={user.photoURL} alt="" />
             <div>
-              <Link to={"/profile"}>
-                <h3 className="font-bold text-xl">Shaon Hossen</h3>
-              </Link>
-
-              <p className="text-gray-400">
-                10/12/2026 <span>times ago</span>
-              </p>
+              <h3 className="font-bold">{user.displayName}</h3>
+              <p className="text-gray-400 text-sm">Just now</p>
             </div>
           </div>
-          <div className="  mb-3">
-            <div className="postDetails my-3 bg-gray-600">
-              <img src="" alt="" />
-              <p className=" px-5 py-3 border-gray-500 rounded-sm">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente amet similique
-                sunt repellendus earum voluptate!
-              </p>
-            </div>
 
-            <div className="comment px-5">
-              <div className="nameDate flex gap-3  ">
-                <div className="profilePhoto mt-2">
-                  <img className="w-7 h-7 bg-white rounded-full" src="" alt="" />
-                </div>
-                <div>
-                  <div className="bg-gray-500 px-2 p-1 rounded-xl">
-                    <h3 className="font-bold ">Shaon Hossen</h3>
-                    <p className="text-gray-200">
-                      <p className="">this is comment</p>
-                    </p>
-                  </div>
-                  <p className="text-[12px] mt-2 cursor-pointer">Like</p>
-                </div>
-              </div>
+          {/* Post */}
+          <p className="bg-gray-600 p-4 rounded-lg">{lesson.text}</p>
+
+          {/* Actions */}
+          <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
+            <button
+              onClick={() => handleLike(lesson._id, lesson.liked)}
+              className={`flex justify-center items-center gap-2 p-2 ${
+                lesson.liked ? "text-blue-400" : ""
+              }`}
+            >
+              <AiOutlineLike /> Like ({lesson.likes})
+            </button>
+
+            <div className="flex justify-center items-center gap-2 p-2">❤️ Favorite</div>
+
+            <Link
+              to={`/lesson-details/${lesson._id}`}
+              className="flex justify-center items-center gap-2 p-2"
+            >
+              <FaRegComment /> Comment ({lesson.comments?.length || 0})
+            </Link>
+
+            <div className="flex justify-center items-center gap-2 p-2">
+              <FaShare /> Share
             </div>
           </div>
         </div>
-        <div className="likeCommentShare grid grid-cols-4 rounded-xl overflow-hidden ">
-          <div className="like ">
-            {/* <FcDislike />  */}
-            <Link className="flex justify-center items-center p-1 gap-2 ">
-              {" "}
-              <AiOutlineLike />
-              <span>Like (50)</span>
-            </Link>
-          </div>
-          <div className="like ">
-            {/* <FcDislike />  */}
-            <Link className="flex justify-center items-center p-1 gap-2 ">
-              {" "}
-              <FcLike /> <span>Faborate (15)</span>
-            </Link>
-          </div>
-          <div className="comment ">
-            <Link className="flex justify-center items-center p-1 gap-2 ">
-              {" "}
-              <FaRegComment /> <span>Comment (45)</span>
-            </Link>
-          </div>
-          <div className="share  ">
-            <Link className="flex justify-center items-center p-1 gap-2 ">
-              <FaShare /> <span>Share (40)</span>
-            </Link>
+      ))}
+
+      {/* ✏️ Edit Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white text-black w-full max-w-md rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Edit Lesson ✏️</h3>
+
+            <textarea
+              rows="4"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              className="w-full border rounded-lg p-3 mb-4"
+            />
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="bg-gray-300 px-4 py-1 rounded"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleUpdateLesson}
+                className="bg-green-500 text-white px-4 py-1 rounded"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -133,7 +133,9 @@ const AddLesson = () => {
                   👍 Like ({lesson.likes})
                 </button>
 
-                <Link to="/lesson-Details">💬 Comment ({lesson.comments?.length || 0})</Link>
+                <Link to={`/lesson-details/${lesson._id}`}>
+                  💬 Comment ({lesson.comments?.length || 0})
+                </Link>
 
                 <button
                   onClick={() => handleFavorite(lesson._id, lesson.favorite)}
