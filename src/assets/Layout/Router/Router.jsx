@@ -12,6 +12,7 @@ import Dashboard from "../../../Pages/Dashboard/Dashboard";
 import Profile from "../../../Pages/Profile/Profile";
 import Favorites from "../../../Pages/Favorites/Favorites";
 import LessonDetails from "../../../Pages/LessonDetails/LessonDetails";
+import ProfileSetting from "../../../Pages/ProfileSetting/ProfileSetting";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -78,6 +79,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <LessonDetails></LessonDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/user-profile/setting",
+        element: (
+          <PrivateRoute>
+            <ProfileSetting></ProfileSetting>
           </PrivateRoute>
         ),
       },

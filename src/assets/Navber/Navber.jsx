@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import logo from "../Logo/logo.jpg";
 import useAuth from "./../../Hooks/useAuth";
 import Dashboard from "./../../Pages/Dashboard/Dashboard";
@@ -7,26 +7,27 @@ import Dashboard from "./../../Pages/Dashboard/Dashboard";
 const Navber = () => {
   const { user, logOut } = useAuth();
   // console.log(user);
+  const Navigate = useNavigate();
   const nonUser = (
     <>
-      <NavLink to={"/"} className={"mr-3"}>
+      <NavLink to={"/"} className={"navberLInk"}>
         Home
       </NavLink>
-      <NavLink to={"dashboard/Public-Lesson"} className={"mr-3"}>
+      <NavLink to={"dashboard/Public-Lesson"} className={"navberLInk"}>
         Public Lessons{" "}
       </NavLink>
-      <NavLink to={"dashboard/Pricing"} className={"mr-3"}>
+      <NavLink to={"dashboard/Pricing"} className={"navberLInk"}>
         Pricing{" "}
       </NavLink>
-      <NavLink to={"dashboard/Add-Lesson"} className={"mr-3"}>
+      <NavLink to={"dashboard/Add-Lesson"} className={"navberLInk"}>
         {" "}
         Add Lesson
       </NavLink>
-      <NavLink to={"dashboard/my-Lesson"} className={"mr-3"}>
+      <NavLink to={"dashboard/my-Lesson"} className={"navberLInk"}>
         {" "}
         My Lessons
       </NavLink>
-      <NavLink to={"/dashboard/favorites"} className={"mr-3"}>
+      <NavLink to={"/dashboard/favorites"} className={"navberLInk"}>
         {" "}
         Favorites
       </NavLink>
@@ -35,6 +36,8 @@ const Navber = () => {
 
   const handleSignOut = () => {
     logOut();
+
+    Navigate("/");
   };
 
   return (
@@ -72,7 +75,7 @@ const Navber = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className=" ">
             {/* Menubar */}
-            <li className="">{nonUser}</li>
+            <li className=" flex items-center gap-4">{nonUser}</li>
           </ul>
         </div>
         <div className="navbar-end ">
@@ -86,33 +89,38 @@ const Navber = () => {
                   />
                 </div>
               </div>
-              <ul
-                tabIndex="-1"
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <Link to={"/profile"} className="justify-between">
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/dashboard"} className="justify-between">
-                    Dashboard
-                    <span className="badge">New</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link>Settings</Link>
-                </li>
-                <li>
-                  <Link onClick={handleSignOut}>Logout</Link>
-                </li>
-              </ul>
+              <div className="proFileMenu">
+                {" "}
+                <ul
+                  tabIndex="-1"
+                  className="menu  menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                >
+                  <li>
+                    <NavLink to={"/profile"} className="justify-between">
+                      Profile
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to={"/dashboard"} className="justify-between">
+                      Dashboard
+                      <span className="badge">New</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to={"/user-profile/setting"}>Settings</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className={""} to={""} onClick={handleSignOut}>
+                      Logout
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
             </div>
           ) : (
             <NavLink
               to={"auth/login"}
-              className={"mr-3 bg-green-600 px-5 p-2 rounded-sm font-bold hover-3d"}
+              className={"mr-3 px-5 p-2 gradient-btn rounded-sm font-bold hover-3d"}
             >
               login
             </NavLink>

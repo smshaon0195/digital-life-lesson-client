@@ -1,7 +1,100 @@
 import React from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { AiOutlineLike } from "react-icons/ai";
+import { FaRegComment, FaShare } from "react-icons/fa";
+import { Link } from "react-router";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const PublicLesson = () => {
-  return <div>Public Lesson</div>;
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
+
+  // 🔹 Fetch ALL PUBLIC posts
+  const { data: lessons = [], isLoading } = useQuery({
+    queryKey: ["public-posts"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/posts?visibility=public");
+      return res.data;
+    },
+  });
+
+  // 🔹 Like handler
+  const handleLike = async (id, liked) => {
+    await axiosSecure.patch(`/posts/like/${id}`, { liked });
+    queryClient.invalidateQueries(["public-posts"]);
+  };
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto mt-6">
+      {lessons.map((lesson) => (
+        <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white">
+          {/* User Info */}
+          <div className="flex gap-3 items-center mb-3">
+            <img
+              className="w-10 h-10 rounded-full"
+              src={lesson.userPhoto || "https://shorturl.at/UI6JP"}
+              alt=""
+            />
+            <div>
+              <h3 className="font-bold">{lesson.userName || "Anonymous"}</h3>
+              <p className="text-gray-400 text-sm">
+                {lesson.category} • {lesson.emotionalTone}
+              </p>
+            </div>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-lg font-semibold mb-2">{lesson.title}</h2>
+
+          <div className="md:flex  p-3  items-center">
+            <div className="flex-1 ">
+              <p className="text-gray-700 mb-4">{lesson.text}</p>
+            </div>
+            <div className="flex-1  ">
+              {lesson.postPhoto && (
+                <img
+                  className="rounded-xl mx-auto  md:w-50  md:h-50  h-60 w-60"
+                  src={lesson.postPhoto}
+                  alt=""
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
+            <button
+              onClick={() => handleLike(lesson._id, lesson.liked)}
+              className={`flex justify-center items-center gap-2 p-2 ${
+                lesson.liked ? "text-blue-400" : ""
+              }`}
+            >
+              <AiOutlineLike /> Like ({lesson.likes})
+            </button>
+
+            <div className="flex justify-center items-center gap-2 p-2">❤️ Favorite</div>
+
+            <Link
+              to={`/lesson-details/${lesson._id}`}
+              className="flex justify-center items-center gap-2 p-2"
+            >
+              <FaRegComment /> Comment ({lesson.comments?.length || 0})
+            </Link>
+
+            <div className="flex justify-center items-center gap-2 p-2">
+              <FaShare /> Share
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default PublicLesson;

@@ -4,12 +4,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router";
 import useAuth from "../../Hooks/useAuth";
+import axios from "axios";
 
 const AddLesson = () => {
   const [lessonText, setLessonText] = useState("");
   const [editLessonId, setEditLessonId] = useState(null);
   const [editText, setEditText] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [uploadPhoto, setUploadPhoto] = useState("");
+  // console.log(uploadPhoto);
 
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
@@ -34,11 +37,15 @@ const AddLesson = () => {
       likes: 0,
       comments: [],
       favorite: false,
+      userName: user.displayName,
+      userPhoto: user.photoURL,
+      postPhoto: uploadPhoto,
     };
 
     try {
       await axiosSecure.post("/posts", newLesson);
       setLessonText("");
+      setUploadPhoto("");
       queryClient.invalidateQueries(["posts"]);
     } catch (err) {
       console.error(err);
@@ -65,7 +72,21 @@ const AddLesson = () => {
     setEditText(lesson.text);
     setIsEditModalOpen(true);
   };
+  const handleimage = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageData = new FormData();
+      imageData.append("image", file);
 
+      const image_API = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_Hosting}`;
+      try {
+        const res = await axios.post(image_API, imageData);
+        setUploadPhoto(res.data.data.url);
+      } catch (err) {
+        console.error("ImgBB upload error:", err);
+      }
+    }
+  };
   // 🔹 Update Lesson
   const handleUpdateLesson = async () => {
     try {
@@ -92,18 +113,23 @@ const AddLesson = () => {
         {/* ➕ Add Lesson */}
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">Share a Life Lesson 🌱</h2>
-
           <textarea
-            rows="4"
+            rows="1"
             value={lessonText}
             onChange={(e) => setLessonText(e.target.value)}
             placeholder="Write your life lesson..."
-            className="w-full border rounded-lg p-3"
+            className="w-full bg-gray-200 rounded-lg p-3"
           />
-
+          <label className="inline-block  mt-3 cursor-pointer text-sm text-amber-600 font-medium">
+            Click & Upload a Image
+            <input type="file" accept="image/*" className="hidden" onChange={handleimage} />
+          </label>{" "}
+          <br />
+          {uploadPhoto && <img className="w-full h-50" src={uploadPhoto} alt="" />}
+          {/* <img className="w-full h-50" src={uploadPhoto} alt="" /> */}
           <button
             onClick={handleAddLesson}
-            className="mt-4 bg-amber-500 text-white px-6 py-2 rounded-lg"
+            className="mt-4 gradient-btn  bg-amber-500 text-white px-6 py-2 rounded-lg"
           >
             Post Lesson
           </button>
@@ -123,7 +149,20 @@ const AddLesson = () => {
                 </span>
               )}
 
-              <p className="text-gray-700 mb-4">{lesson.text}</p>
+              <div className="md:flex  p-3  items-center">
+                <div className="flex-1 ">
+                  <p className="text-gray-700 mb-4">{lesson.text}</p>
+                </div>
+                <div className="flex-1  ">
+                  {lesson.postPhoto && (
+                    <img
+                      className="rounded-xl mx-auto  md:w-50  md:h-50  h-60 w-60"
+                      src={lesson.postPhoto}
+                      alt=""
+                    />
+                  )}
+                </div>
+              </div>
 
               <div className="flex justify-between text-sm text-gray-500">
                 <button

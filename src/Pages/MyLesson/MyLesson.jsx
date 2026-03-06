@@ -26,7 +26,6 @@ const MyLesson = () => {
     },
   });
 
-
   // 🔹 Like
   const handleLike = async (id, liked) => {
     await axiosSecure.patch(`/posts/like/${id}`, { liked });
@@ -78,7 +77,20 @@ const MyLesson = () => {
           </div>
 
           {/* Post */}
-          <p className="bg-gray-600 p-4 rounded-lg">{lesson.text}</p>
+          <div className="md:flex  p-3  items-center">
+            <div className="flex-1 ">
+              <p className="text-gray-700 mb-4">{lesson.text}</p>
+            </div>
+            <div className="flex-1  ">
+              {lesson.postPhoto && (
+                <img
+                  className="rounded-xl mx-auto  md:w-50  md:h-50  h-60 w-60"
+                  src={lesson.postPhoto}
+                  alt=""
+                />
+              )}
+            </div>
+          </div>
 
           {/* Actions */}
           <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">

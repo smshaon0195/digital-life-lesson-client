@@ -14,13 +14,14 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    
-    registerUser(data.email, data.password)
+    registerUser(data.email, data.password, data.name)
       .then((res) => {
         console.log(res.user);
+ 
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
+        return
       });
     alert("Registration Successful!");
   };

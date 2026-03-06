@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Profile = () => {
   const { updateUserProfile, user } = useAuth();
-  // console.log(user);
   const [profileImage, setProfileImage] = useState(null);
+  const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
+  console.log(user)
 
+  // Fetch user profile from backend
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["user", user?.uid],
+    enabled: !!user?.uid,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${user.uid}`);
+      return res.data;
+    },
+  });
+
+  // Form state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,52 +32,50 @@ const Profile = () => {
     bio: "",
   });
 
-  // Initialize formData when user loads
+  // Initialize formData when user or profile loads
   useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.displayName || "",
-        email: user.email || "",
-        phone: user.phoneNumber || "",
-        gender: formData.gender,
-        education: formData.education,
-        language: formData.language,
-        bio: formData.bio,
-      });
-      setProfileImage(user.photoURL || null);
-    }
-  }, [user]);
-  // console.log(formData);
-  // Handle profile image upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageData = new FormData();
-      imageData.append("image", file);
+    if (!user) return;
 
-      const image_API = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_Hosting}`;
+    setFormData({
+      name: user.displayName || "",
+      email: user.email || "",
+      phone: profile?.phone || "",
+      gender: profile?.gender || "",
+      education: profile?.education || "",
+      language: profile?.language || "",
+      bio: profile?.bio || "",
+    });
 
-      axios
-        .post(image_API, imageData)
-        .then((res) => {
-          // console.log("ImgBB response:", res.data);
-          setProfileImage(res.data.data.url);
-        })
-        .catch((err) => console.error("ImgBB upload error:", err));
-    }
-  };
+    setProfileImage(profile?.photoURL || user.photoURL || null);
+  }, [user, profile]);
 
   // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-      [e.target.phone]: e.target.value,
     });
   };
 
-  // Save profile to Firebase
-  const handleSubmit = (e) => {
+  // Handle profile image upload
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageData = new FormData();
+      imageData.append("image", file);
+
+      const image_API = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_Hosting}`;
+      try {
+        const res = await axios.post(image_API, imageData);
+        setProfileImage(res.data.data.url);
+      } catch (err) {
+        console.error("ImgBB upload error:", err);
+      }
+    }
+  };
+
+  // Handle form submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const updateDetails = {
@@ -70,12 +83,35 @@ const Profile = () => {
       photoURL: profileImage,
     };
 
-    updateUserProfile(updateDetails)
-      .then(() => {
-        alert("Profile updated successfully!");
-      })
-      .catch((err) => console.error(err));
+    const postData = {
+      uid: user.uid,
+      email: user.email,
+      phone: formData.phone,
+      gender: formData.gender,
+      education: formData.education,
+      language: formData.language,
+      bio: formData.bio,
+      photoURL: profileImage,
+    };
+
+    try {
+      // Save/update user details in backend
+      await axiosSecure.put("/users", postData);
+
+      // Invalidate React Query cache
+      queryClient.invalidateQueries(["user", user.uid]);
+
+      // Update Firebase profile
+      await updateUserProfile(updateDetails);
+
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile. Please try again.");
+    }
   };
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="min-h-screen text-blue-800 bg-gradient-to-br from-amber-50 to-gray-100 flex justify-center items-center p-4">
@@ -86,15 +122,15 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-amber-400">
             <img
-              src={profileImage || user?.photoURL || "https://shorturl.at/UI6JP"}
+              src={profileImage || "https://shorturl.at/UI6JP"}
               alt="Profile"
               className="w-full h-full object-cover"
             />
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold">{formData.name || user?.displayName}</h3>
-            <p className="text-gray-500 text-sm">{formData.email || user?.email}</p>
+            <h3 className="text-xl font-semibold">{formData.name}</h3>
+            <p className="text-gray-500 text-sm">{formData.email}</p>
 
             <label className="inline-block mt-3 cursor-pointer text-sm text-amber-600 font-medium">
               Change Photo
@@ -105,7 +141,6 @@ const Profile = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name */}
           <div>
             <label className="text-sm font-medium">Full Name</label>
             <input
@@ -117,7 +152,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label className="text-sm font-medium">Email</label>
             <input
@@ -128,7 +162,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Phone */}
           <div>
             <label className="text-sm font-medium">Mobile Number</label>
             <input
@@ -141,7 +174,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Gender */}
           <div>
             <label className="text-sm font-medium">Gender</label>
             <select
@@ -157,7 +189,6 @@ const Profile = () => {
             </select>
           </div>
 
-          {/* Education */}
           <div>
             <label className="text-sm font-medium">Education</label>
             <input
@@ -170,7 +201,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Language */}
           <div>
             <label className="text-sm font-medium">Language</label>
             <input
@@ -183,7 +213,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Bio */}
           <div className="md:col-span-2">
             <label className="text-sm font-medium">About Me</label>
             <textarea
@@ -196,7 +225,6 @@ const Profile = () => {
             ></textarea>
           </div>
 
-          {/* Save Button */}
           <div className="md:col-span-2">
             <button
               type="submit"
