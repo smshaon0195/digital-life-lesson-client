@@ -16,15 +16,25 @@ const MyLesson = () => {
   const [editText, setEditText] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  // Favorite Handle
+  const handleFavorite = async (id, favorite) => {
+    await axiosSecure.patch(`/posts/favorite/${id}`, {
+      favorite: !favorite,
+    });
+    queryClient.invalidateQueries(["posts"]);
+  };
+
   // 🔹 Fetch ONLY my posts
-  const { data: lessons = [], isLoading } = useQuery({
+  const { data: lessons = [] } = useQuery({
     queryKey: ["my-posts", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/posts?email=${user.email}`);
+      console.log(res);
       return res.data;
     },
   });
+  console.log(lessons);
 
   // 🔹 Like
   const handleLike = async (id, liked) => {
@@ -51,10 +61,6 @@ const MyLesson = () => {
     queryClient.invalidateQueries(["my-posts"]);
   };
 
-  if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
-
   return (
     <div className="max-w-2xl mx-auto">
       {lessons.map((lesson) => (
@@ -69,9 +75,13 @@ const MyLesson = () => {
 
           {/* User Info */}
           <div className="flex gap-3 items-center mb-3">
-            <img className="w-10 h-10 rounded-full" src={user.photoURL} alt="" />
+            <img
+              className="w-10 h-10 rounded-full"
+              src={lesson.userPhoto || "https://shorturl.at/UI6JP"}
+              alt=""
+            />
             <div>
-              <h3 className="font-bold">{user.displayName}</h3>
+              <h3 className="font-bold">{lesson.userName}</h3>
               <p className="text-gray-400 text-sm">Just now</p>
             </div>
           </div>
@@ -79,7 +89,7 @@ const MyLesson = () => {
           {/* Post */}
           <div className="md:flex  p-3  items-center">
             <div className="flex-1 ">
-              <p className="text-gray-700 mb-4">{lesson.text}</p>
+              <p className="text-white mb-4">{lesson.text}</p>
             </div>
             <div className="flex-1  ">
               {lesson.postPhoto && (
@@ -103,7 +113,17 @@ const MyLesson = () => {
               <AiOutlineLike /> Like ({lesson.likes})
             </button>
 
-            <div className="flex justify-center items-center gap-2 p-2">❤️ Favorite</div>
+            <button onClick={() => handleFavorite(lesson._id, lesson.favorite)}>
+              <div
+                className={
+                  lesson.favorite === true
+                    ? "flex cursor-pointer justify-center items-center gap-2 p-2 text-green-600"
+                    : "text-white cursor-pointer"
+                }
+              >
+                ❤️ Favorite
+              </div>
+            </button>
 
             <Link
               to={`/lesson-details/${lesson._id}`}

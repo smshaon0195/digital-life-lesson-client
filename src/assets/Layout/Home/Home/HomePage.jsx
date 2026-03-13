@@ -3,9 +3,10 @@ import SlideCarosol from "../../../Slider/SlideCarosol";
 import Slider1 from "../../../Slider/Slider1";
 import SupportSyestem from "../../../../Pages/SupportSyestem/SupportSyestem";
 import LarningSupport from "../../../../Pages/LarnigSupport/LarningSupport";
-import RecenCourse from "../../../../Pages/RecentCourse/RecenCourse";
 
 import PricingCards from "../../../../Pages/PricingCards/PricingCards";
+import { Outlet } from "react-router";
+import HomePostLayout from "../HomeLayout/HomePostLayout";
 
 const HomePage = () => {
   return (
@@ -14,7 +15,10 @@ const HomePage = () => {
       {/* <Slider1></Slider1> */}
       <SupportSyestem></SupportSyestem>
       <LarningSupport></LarningSupport>
-      <RecenCourse></RecenCourse>
+      
+     
+      {/* <HomePostLayout></HomePostLayout> */}
+      
       <PricingCards></PricingCards>
     </div>
   );

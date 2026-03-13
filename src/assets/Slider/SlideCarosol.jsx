@@ -6,8 +6,9 @@ import image2 from "../../assets/Image/2.jpg";
 import image3 from "../../assets/Image/3.jpg";
 const SlideCarosol = () => {
   return (
-    <Carousel autoPlay={true} infiniteLoop={true}>
-      <div class="carousel-item">
+   <div className="">
+     <Carousel className="" autoPlay={true}  infiniteLoop={true}>
+      <div class="carousel-item ">
         <img class="d-block " src={image1} />
         <p className="legend">Legend 1</p>
       </div>
@@ -20,6 +21,7 @@ const SlideCarosol = () => {
         <p className="legend">Legend 3</p>
       </div>
     </Carousel>
+   </div>
   );
 };
 

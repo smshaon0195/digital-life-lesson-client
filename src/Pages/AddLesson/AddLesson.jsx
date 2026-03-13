@@ -108,17 +108,17 @@ const AddLesson = () => {
   }
 
   return (
-    <div className="min-h-screen text-black bg-gradient-to-br from-amber-50 to-gray-100 py-6 px-4">
+    <div className="min-h-screen bg-black text-white  py-6 px-4">
       <div className="max-w-2xl mx-auto">
         {/* ➕ Add Lesson */}
-        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+        <div className="bg-black  text-white border-amber-100 border-2 rounded-2xl shadow p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">Share a Life Lesson 🌱</h2>
           <textarea
             rows="1"
             value={lessonText}
             onChange={(e) => setLessonText(e.target.value)}
             placeholder="Write your life lesson..."
-            className="w-full bg-gray-200 rounded-lg p-3"
+            className="w-full bg-gray-800 rounded-lg p-3"
           />
           <label className="inline-block  mt-3 cursor-pointer text-sm text-amber-600 font-medium">
             Click & Upload a Image
@@ -138,7 +138,7 @@ const AddLesson = () => {
         {/* 📜 Lessons */}
         <div className="space-y-4">
           {lessons.map((lesson) => (
-            <div key={lesson._id} className="bg-white relative rounded-2xl shadow p-4">
+            <div key={lesson._id} className="bg-black bg-gray-800 text-white relative rounded-2xl shadow p-4">
               {/* ⋮ Edit (Owner Only) */}
               {lesson.email === user?.email && (
                 <span
@@ -151,7 +151,7 @@ const AddLesson = () => {
 
               <div className="md:flex  p-3  items-center">
                 <div className="flex-1 ">
-                  <p className="text-gray-700 mb-4">{lesson.text}</p>
+                  <p className="text-white mb-4">{lesson.text}</p>
                 </div>
                 <div className="flex-1  ">
                   {lesson.postPhoto && (

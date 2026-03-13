@@ -1,6 +1,30 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const Dashboard = () => {
+
+ const axiosSecure = useAxiosSecure();
+ const {user} = useAuth()
+  const { data: posts = [] } = useQuery({
+    queryKey: ["Posts", user.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const result = await axiosSecure.get(`/posts?email=${user.email}`);
+      return result.data;
+    },
+  });
+console.log(posts)
+
+
+
+
+
+
+
+
+
   return (
     <div className="bg-gray-100 text-black min-h-screen top-15">
       {/* Header */}
@@ -31,7 +55,7 @@ const Dashboard = () => {
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white text-black p-4 rounded shadow">
               <p>Total Lessons</p>
-              <h2 className="text-2xl font-bold">12</h2>
+              <h2 className="text-2xl font-bold">{posts.length}</h2>
             </div>
             <div className="bg-white p-4 rounded shadow">
               <p>Total Favorites</p>

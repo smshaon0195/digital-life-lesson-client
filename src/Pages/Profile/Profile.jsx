@@ -9,7 +9,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  console.log(user)
+  // console.log(user)
 
   // Fetch user profile from backend
   const { data: profile, isLoading } = useQuery({
@@ -69,7 +69,7 @@ const Profile = () => {
         const res = await axios.post(image_API, imageData);
         setProfileImage(res.data.data.url);
       } catch (err) {
-        console.error("ImgBB upload error:", err);
+        alert.error("ImgBB upload error:", err);
       }
     }
   };
@@ -106,8 +106,7 @@ const Profile = () => {
 
       alert("Profile updated successfully!");
     } catch (err) {
-      console.error("Error updating profile:", err);
-      alert("Failed to update profile. Please try again.");
+      alert("Failed to update profile. Please try again.", err);
     }
   };
 
