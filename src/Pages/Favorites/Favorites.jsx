@@ -5,6 +5,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment, FaShare } from "react-icons/fa";
 import { Link } from "react-router";
+import NoData from "../NoData/NoData";
 
 const Favorites = () => {
   const axiosSecure = useAxiosSecure();
@@ -29,7 +30,7 @@ const Favorites = () => {
   return (
     <div className="max-w-2xl mx-auto">
       {favoratePosts.length === 0 && (
-        <p className="text-center text-2xl my-5 text-gray-500">😂 No Favorite Post 😂</p>
+        <NoData></NoData>
       )}
 
       {favoratePosts.map((lesson) => (

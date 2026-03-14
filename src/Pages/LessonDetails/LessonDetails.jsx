@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import { BsThreeDots } from "react-icons/bs";
+import NoData from "../NoData/NoData";
 
 const LessonDetails = () => {
   const { id } = useParams();
@@ -119,7 +120,9 @@ const LessonDetails = () => {
 
         {/* Comment list */}
         {lesson.comments?.length === 0 && (
-          <p className="text-center text-gray-500">😂 No comments yet 😂</p>
+       
+          <NoData></NoData>
+         
         )}
 
         {lesson.comments?.map((item, index) => {

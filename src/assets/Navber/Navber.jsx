@@ -73,10 +73,12 @@ const Navber = () => {
           </div>
           <img className="w-10 rounded-sm" src={logo} alt="" />
         </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className=" ">
+        <div role="tablist" className="tabs tab-active  navbar-center hidden lg:flex">
+          <ul className="  ">
             {/* Menubar */}
-            <li className=" flex items-center gap-4">{nonUser}</li>
+            <li role="tab" className=" tab flex items-center gap-4 ">
+              {nonUser}
+            </li>
           </ul>
         </div>
         <div className="navbar-end ">

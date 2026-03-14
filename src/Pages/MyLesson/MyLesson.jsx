@@ -6,6 +6,7 @@ import { FaRegComment, FaShare } from "react-icons/fa";
 import { Link } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import Loding from "../NoData/Loding";
 
 const MyLesson = () => {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ const MyLesson = () => {
   };
 
   // 🔹 Fetch ONLY my posts
-  const { data: lessons = [] } = useQuery({
+  const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["my-posts", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -61,6 +62,13 @@ const MyLesson = () => {
     queryClient.invalidateQueries(["my-posts"]);
   };
 
+  if (isLoading)
+    return (
+      <p className="text-white">
+        <Loding></Loding>
+      </p>
+    );
+
   return (
     <div className="max-w-2xl mx-auto">
       {lessons.map((lesson) => (
@@ -82,10 +90,12 @@ const MyLesson = () => {
             />
             <div>
               <h3 className="font-bold">{lesson.userName}</h3>
-              <p className="text-gray-400 text-sm">{new Date(lesson.createdAt).toLocaleTimeString([], {
+              <p className="text-gray-400 text-sm">
+                {new Date(lesson.createdAt).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
-                })}</p>
+                })}
+              </p>
             </div>
           </div>
 

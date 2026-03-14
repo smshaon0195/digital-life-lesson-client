@@ -3,6 +3,7 @@ import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Loding from "../NoData/Loding";
 
 const Profile = () => {
   const { updateUserProfile, user } = useAuth();
@@ -110,7 +111,12 @@ const Profile = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <p className="text-white">
+        <Loding></Loding>
+      </p>
+    );
 
   return (
     <div className="min-h-screen text-blue-800 bg-gradient-to-br from-amber-50 to-gray-100 flex justify-center items-center p-4">
