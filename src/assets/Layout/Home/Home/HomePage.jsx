@@ -17,7 +17,7 @@ const HomePage = () => {
       <LarningSupport></LarningSupport>
       
      
-      {/* <HomePostLayout></HomePostLayout> */}
+      <HomePostLayout></HomePostLayout>
       
       <PricingCards></PricingCards>
     </div>

@@ -22,7 +22,7 @@ const AddLesson = () => {
   const { data: lessons = [], error } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/posts");
+      const res = await fetch("https://digital-life-lesson-server-six.vercel.app/posts");
       return res.json();
     },
   });
@@ -138,7 +138,10 @@ const AddLesson = () => {
         {/* 📜 Lessons */}
         <div className="space-y-4">
           {lessons.map((lesson) => (
-            <div key={lesson._id} className="bg-black bg-gray-800 text-white relative rounded-2xl shadow p-4">
+            <div
+              key={lesson._id}
+              className="bg-black bg-gray-800 text-white relative rounded-2xl shadow p-4"
+            >
               {/* ⋮ Edit (Owner Only) */}
               {lesson.email === user?.email && (
                 <span
@@ -167,7 +170,7 @@ const AddLesson = () => {
               <div className="flex justify-between text-sm text-gray-500">
                 <button
                   onClick={() => handleLike(lesson._id, lesson.liked)}
-                  className={lesson.liked ? "text-blue-600" : ""}
+                  className={lesson.liked ? "text-blue-600 cursor-pointer" : "cursor-pointer"}
                 >
                   👍 Like ({lesson.likes})
                 </button>
@@ -178,7 +181,7 @@ const AddLesson = () => {
 
                 <button
                   onClick={() => handleFavorite(lesson._id, lesson.favorite)}
-                  className={lesson.favorite ? "text-red-500" : ""}
+                  className={lesson.favorite ? "text-red-500 cursor-pointer" : "cursor-pointer"}
                 >
                   ❤️ Favorite
                 </button>
@@ -193,7 +196,7 @@ const AddLesson = () => {
       {/* ✏️ Edit Modal */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-md rounded-xl p-6">
+          <div className="bg-white text-black w-full max-w-md rounded-xl p-6">
             <h3 className="text-xl font-bold mb-4">Edit Lesson ✏️</h3>
 
             <textarea

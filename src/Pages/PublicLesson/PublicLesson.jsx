@@ -5,9 +5,11 @@ import { FaRegComment, FaShare } from "react-icons/fa";
 import { Link } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const PublicLesson = () => {
   const { user } = useAuth();
+
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
@@ -22,10 +24,22 @@ const PublicLesson = () => {
 
   // 🔹 Like handler
   const handleLike = async (id, liked) => {
+    if (!user) {
+      return toast.error("Please Login and Like this posts");
+    }
     await axiosSecure.patch(`/posts/like/${id}`, { liked });
-    queryClient.invalidateQueries(["public-posts"]);
+    queryClient.invalidateQueries({ queryKey: ["public-posts"] });
   };
-
+  // 🔹 Favorite
+  const handleFavorite = async (id, favorite) => {
+    if (!user) {
+      return toast.error("Please Login and Favorite this posts");
+    }
+    await axiosSecure.patch(`/posts/favorite/${id}`, {
+      favorite: !favorite,
+    });
+    queryClient.invalidateQueries(["posts"]);
+  };
   return (
     <div className="max-w-2xl mx-auto mt-6">
       {lessons.map((lesson) => (
@@ -40,7 +54,11 @@ const PublicLesson = () => {
             <div>
               <h3 className="font-bold">{lesson.userName || "Anonymous"}</h3>
               <p className="text-gray-400 text-sm">
-                {lesson.category} • {lesson.emotionalTone}
+                {new Date(lesson.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                {lesson.category} {lesson.emotionalTone}
               </p>
             </div>
           </div>
@@ -67,14 +85,23 @@ const PublicLesson = () => {
           <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
             <button
               onClick={() => handleLike(lesson._id, lesson.liked)}
-              className={`flex justify-center items-center gap-2 p-2 ${
-                lesson.liked ? "text-blue-400" : ""
+              className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${
+                lesson.liked ? "text-blue-400" : "cursor-pointer"
               }`}
             >
               <AiOutlineLike /> Like ({lesson.likes})
             </button>
 
-            <div className="flex justify-center items-center gap-2 p-2">❤️ Favorite</div>
+            <div
+              onClick={() => handleFavorite(lesson._id, lesson.favorite)}
+              className={
+                lesson.favorite
+                  ? "text-red-500 flex justify-center items-center gap-2 p-2 cursor-pointer"
+                  : "flex justify-center items-center gap-2 p-2 cursor-pointer"
+              }
+            >
+              ❤️ Favorite
+            </div>
 
             <Link
               to={`/lesson-details/${lesson._id}`}

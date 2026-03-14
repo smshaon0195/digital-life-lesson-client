@@ -13,7 +13,7 @@ const HomePostLayout = () => {
       </div>
       <div className="md:flex w-[95%] mx-auto gap-12">
         <LeftSideBar></LeftSideBar>
-        <Outlet></Outlet>
+        <RecentPosts></RecentPosts>
         <RightSiderBar></RightSiderBar>
       </div>
     </div>

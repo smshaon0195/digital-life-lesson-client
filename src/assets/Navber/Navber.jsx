@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router";
 import logo from "../Logo/logo.jpg";
 import useAuth from "./../../Hooks/useAuth";
 import Dashboard from "./../../Pages/Dashboard/Dashboard";
+import toast from "react-hot-toast";
 
 const Navber = () => {
   const { user, logOut } = useAuth();
@@ -36,7 +37,7 @@ const Navber = () => {
 
   const handleSignOut = () => {
     logOut();
-
+    toast.success("LogOut Succesfull");
     Navigate("/");
   };
 

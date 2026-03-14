@@ -1,13 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { FaLongArrowAltRight, FaRegComment, FaShare } from "react-icons/fa";
 import { Link } from "react-router";
 import { AiOutlineLike } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
+import useAuth from "../../Hooks/useAuth";
+import Favorites from "./../Favorites/Favorites";
+import toast from "react-hot-toast";
 
 const RecentPosts = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
   const { data: posts = [] } = useQuery({
     queryKey: ["Posts"],
     queryFn: async () => {
@@ -16,6 +21,26 @@ const RecentPosts = () => {
     },
   });
   const limitedPosts = posts.slice(0, 6);
+
+  // 🔹 Like handler
+  const handleLike = async (id, liked) => {
+    if (!user) {
+      return toast.error("Please Login and Like this posts");
+    }
+    await axiosSecure.patch(`/posts/like/${id}`, { liked });
+    queryClient.invalidateQueries(["posts"]);
+  };
+  // 🔹 Favorite
+  const handleFavorite = async (id, favorite) => {
+    if (!user) {
+      return toast.error("Please Login and Favorite this posts");
+    }
+    await axiosSecure.patch(`/posts/favorite/${id}`, {
+      favorite: !favorite,
+    });
+    queryClient.invalidateQueries(["posts"]);
+  };
+
   return (
     <div className="md:w-6/12  mx-auto">
       <div className="divParent   gap-7">
@@ -30,10 +55,17 @@ const RecentPosts = () => {
 
               {/* User Info */}
               <div className="flex gap-3 items-center mb-3">
-                <img className="w-10 h-10 rounded-full" src={post.userPhoto || "https://shorturl.at/UI6JP"} alt="" />
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={post.userPhoto || "https://shorturl.at/UI6JP"}
+                  alt=""
+                />
                 <div>
                   <h3 className="font-bold">{post.userName}</h3>
-                  <p className="text-gray-400 text-sm">Just now</p>
+                  <p className="text-gray-400 text-sm">{new Date(post.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}</p>
                 </div>
               </div>
 
@@ -56,20 +88,26 @@ const RecentPosts = () => {
               {/* Actions */}
               <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
                 <button
-                  className={`flex justify-center items-center gap-2 p-2 ${
-                    post.liked ? "text-blue-400" : ""
+                  onClick={() => handleLike(post._id, post.liked)}
+                  className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${
+                    post.liked ? "text-blue-400" : "cursor-pointer"
                   }`}
                 >
                   <AiOutlineLike /> Like ({post.likes})
                 </button>
 
-                <div className="flex justify-center items-center gap-2 p-2">❤️ Favorite</div>
+                <div
+                  onClick={() => handleFavorite(post._id, post.favorite)}
+                  className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${post.favorite ? "text-blue-400 " : ""}`}
+                >
+                  ❤️ Favorite
+                </div>
 
                 <Link
                   to={`/lesson-details/${post._id}`}
-                  className="flex justify-center items-center gap-2-2 p-2"
+                  className="flex justify-center items-center gap-2 p-2"
                 >
-                  <FaRegComment /> Comment ({post.comments?.length || 0})
+                  <FaRegComment />Comment ({post.comments?.length || 0})
                 </Link>
 
                 <div className="flex justify-center items-center gap-2 p-2">

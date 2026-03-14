@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -9,15 +10,19 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const { signInUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
+
   const handelLogin = (data) => {
     console.log(data);
     (signInUser(data.email, data.password)
       .then((result) => {
+        toast.success("Login Succesfull");
         console.log(result.user);
+        
         navigate(location?.state || "/");
       })
       .catch((error) => {
@@ -27,54 +32,63 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(handelLogin)} className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col gap-10 lg:flex-row-reverse">
-          <div className="text-center  flex-1  lg:text-left">
-            <h1 className="text-5xl font-bold">Login now!</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-              exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
-            </p>
-          </div>
-          <div className="card bg-base-100  flex-1 max-w-sm shrink-0 shadow-2xl">
-            <div className="card-body">
-              <fieldset className="fieldset">
-                <label className="label">Email</label>
-                <input
-                  {...register("email", { required: true })}
-                  type="email"
-                  className="input w-full"
-                  placeholder="Email"
-                />
-                {/* email Error */}
-                {errors.email?.type === "required" && (
-                  <p role="alert" className="text-red-500">
-                    {" "}
-                    Email is required
-                  </p>
-                )}
-                <label className="label">Password</label>
-                <input
-                  {...register("password")}
-                  type="password"
-                  className="input w-full"
-                  placeholder="Password"
-                />
-                <div>
-                  <a className="link link-hover">Forgot password?</a>
-                </div>
-                <button type="submit" className="btn btn-neutral mt-4">
-                  Login
-                </button>
-              </fieldset>
-              <p>
-                You have no account?{" "}
-                <Link to={"/auth/register"}>
-                  <span className="text-green-500"> Register Now</span>
-                </Link>
-              </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-base-200 to-base-300 px-4">
+      <form
+        onSubmit={handleSubmit(handelLogin)}
+        className="w-full max-w-5xl bg-base-100 shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2"
+      >
+        {/* Left Side */}
+        <div className="flex flex-col justify-center p-10 bg-gradient-to-br from-primary/10 to-secondary/10">
+          <h1 className="text-5xl font-bold mb-6">Login now!</h1>
+          <p className="text-base-content/70 leading-relaxed">
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
+            exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
+          </p>
+        </div>
+
+        {/* Right Side */}
+        <div className="p-10">
+          <div className="space-y-4">
+            <div>
+              <label className="label font-medium">Email</label>
+              <input
+                {...register("email", { required: true })}
+                type="email"
+                className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Email"
+              />
+
+              {errors.email?.type === "required" && (
+                <p role="alert" className="text-red-500 text-sm mt-1">
+                  Email is required
+                </p>
+              )}
             </div>
+
+            <div>
+              <label className="label font-medium">Password</label>
+              <input
+                {...register("password")}
+                type="password"
+                className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Password"
+              />
+            </div>
+
+            <div className="text-right">
+              <a className="link link-hover text-sm">Forgot password?</a>
+            </div>
+
+            <button type="submit" className="btn btn-primary w-full mt-2">
+              Login
+            </button>
+
+            <p className="text-center pt-2">
+              You have no account?{" "}
+              <Link to={"/auth/register"}>
+                <span className="text-green-500 font-semibold">Register Now</span>
+              </Link>
+            </p>
           </div>
         </div>
       </form>

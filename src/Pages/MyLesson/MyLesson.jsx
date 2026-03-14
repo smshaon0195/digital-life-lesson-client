@@ -82,7 +82,10 @@ const MyLesson = () => {
             />
             <div>
               <h3 className="font-bold">{lesson.userName}</h3>
-              <p className="text-gray-400 text-sm">Just now</p>
+              <p className="text-gray-400 text-sm">{new Date(lesson.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}</p>
             </div>
           </div>
 
