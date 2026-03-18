@@ -22,7 +22,7 @@ const AddLesson = () => {
   const { data: lessons = [], error } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const res = await fetch("https://digital-life-lesson-server-six.vercel.app/posts");
+      const res = await fetch("http://localhost:3000/posts");
       return res.json();
     },
   });
@@ -108,7 +108,7 @@ const AddLesson = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white  py-6 px-4">
+    <div className=" bg-black text-white  py-6 px-4">
       <div className="max-w-2xl mx-auto">
         {/* ➕ Add Lesson */}
         <div className="bg-black  text-white border-amber-100 border-2 rounded-2xl shadow p-6 mb-6">

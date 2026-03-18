@@ -61,7 +61,7 @@ const Favorites = () => {
           {/* Post */}
           <div className="md:flex  p-3  items-center">
             <div className="flex-1 ">
-              <p className="text-gray-700 mb-4">{lesson.text}</p>
+              <p className=" mb-4">{lesson.text}</p>
             </div>
             <div className="flex-1  ">
               {lesson.postPhoto && (

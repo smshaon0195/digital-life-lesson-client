@@ -6,9 +6,9 @@ const PricingCards = () => {
       name: "Basic",
       price: "$3",
       features: [
-        "Unlimited Photos",
+        "Limited Photos",
         "Secure Online Transfer",
-        "Cloud Storage",
+        "5 GB Cloud Storage",
         "24/7 Customer Service",
         "Automatic Backup",
       ],
@@ -21,7 +21,7 @@ const PricingCards = () => {
       features: [
         "Unlimited Photos",
         "Secure Online Transfer",
-        "Cloud Storage",
+        "15 GB Cloud Storage",
         "24/7 Customer Service",
         "Automatic Backup",
       ],
@@ -34,7 +34,7 @@ const PricingCards = () => {
       features: [
         "Unlimited Photos",
         "Secure Online Transfer",
-        "Cloud Storage",
+        "50 GB Cloud Storage",
         "24/7 Customer Service",
         "Automatic Backup",
       ],
@@ -72,7 +72,7 @@ const PricingCards = () => {
             </ul>
 
             <button
-              className={`w-full py-3 rounded-md font-bold ${plan.buttonColor} hover:opacity-90 transition`}
+              className={`w-full py-3 cursor-pointer rounded-md font-bold ${plan.buttonColor} hover:opacity-90 transition`}
             >
               Purchase
             </button>

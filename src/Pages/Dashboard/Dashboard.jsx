@@ -14,6 +14,7 @@ const Dashboard = () => {
       return result.data;
     },
   });
+  console.log(posts);
   const favoratePosts = posts.filter((post) => post.favorite);
   console.log(favoratePosts);
 
@@ -21,12 +22,15 @@ const Dashboard = () => {
     <div className="bg-gray-100 text-black min-h-screen top-15">
       {/* Header */}
       <header className=" bg-white sticky text-black shadow ">
-        <div className="flex justify-between  w-[95%] mx-auto items-center p-4">
-          <h1 className="text-xl font-bold">Dashboard</h1>
-          <h2 className="text-2xl font-bold">Wellcome </h2>
-          <button className="bg-gray-300 text-gray-600 px-4 py-2 rounded cursor-not-allowed">
-            Premium (Disabled)
-          </button>
+        <div className=" text-center justify-between md:flex w-[95%] mx-auto items-center p-4">
+          <h1 className="text-xl font-bold">User Dashboard</h1>
+
+          <div className="text-center border-amber-200 border-2 px-3 sm:border-0">
+            <h2 className="text-2xl font-bold">
+              Wellcome <br />
+              <span className="text-blue-600 font-serif">{user.displayName} ❤️</span>{" "}
+            </h2>
+          </div>
         </div>
       </header>
 
@@ -34,7 +38,7 @@ const Dashboard = () => {
         {/* Main */}
         <main className="flex-1 p-6 space-y-8">
           {/* Stats */}
-          <section className="grid w-[95%] mx-auto grid-cols-1 md:grid-cols-3 gap-4">
+          <section className="grid text-center w-[95%] mx-auto grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white text-black p-4 rounded shadow">
               <p>Total Lessons</p>
               <h2 className="text-2xl font-bold">{posts.length}</h2>
@@ -61,14 +65,18 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b">
-                  <td>HTML Basics</td>
-                  <td>Public</td>
-                  <td className="space-x-2">
-                    <button className="text-blue-600">Update</button>
-                    <button className="text-red-600">Delete</button>
-                  </td>
-                </tr>
+                {posts.map((post) => {
+                  return (
+                    <tr key={post._id} className="border-b">
+                      <td>{post.text}</td>
+                      <td>Public</td>
+                      <td className="space-x-2">
+                        <button className="text-blue-600">Update</button>
+                        <button className="text-red-600">Delete</button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </section>

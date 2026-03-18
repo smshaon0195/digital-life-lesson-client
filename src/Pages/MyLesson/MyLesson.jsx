@@ -16,6 +16,10 @@ const MyLesson = () => {
   const [editLessonId, setEditLessonId] = useState(null);
   const [editText, setEditText] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 
   // Favorite Handle
   const handleFavorite = async (id, favorite) => {
@@ -35,7 +39,6 @@ const MyLesson = () => {
       return res.data;
     },
   });
-  console.log(lessons);
 
   // 🔹 Like
   const handleLike = async (id, liked) => {
@@ -62,6 +65,15 @@ const MyLesson = () => {
     queryClient.invalidateQueries(["my-posts"]);
   };
 
+  const handleDeleteLesson = async () => {
+    await axiosSecure.delete(`/posts/${deleteId}`);
+
+    setIsDeleteModalOpen(false);
+    setDeleteId(null);
+
+    queryClient.invalidateQueries(["my-posts", user?.email]);
+  };
+
   if (isLoading)
     return (
       <p className="text-white">
@@ -75,11 +87,60 @@ const MyLesson = () => {
         <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white relative">
           {/* ⋮ Edit */}
           <span
-            onClick={() => handleEditPrompt(lesson)}
+            onClick={() => setOpenMenuId(openMenuId === lesson._id ? null : lesson._id)}
             className="absolute right-4 top-3 cursor-pointer"
           >
             <BsThreeDots />
           </span>
+
+          {openMenuId === lesson._id && (
+            <div className="absolute right-0 mt-2 bg-white text-black rounded shadow-md w-24">
+              <button
+                onClick={() => {
+                  handleEditPrompt(lesson);
+                  setOpenMenuId(null);
+                }}
+                className="block w-full text-left px-3 cursor-pointer py-2 hover:bg-gray-200"
+              >
+                ✏️ Edit
+              </button>
+
+              <button
+                onClick={() => {
+                  setDeleteId(lesson._id);
+                  setIsDeleteModalOpen(true);
+                }}
+                className="block cursor-pointer w-full text-left px-3 py-2 hover:bg-red-200"
+              >
+                🗑 Delete
+              </button>
+            </div>
+          )}
+          {isDeleteModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+              <div className="bg-white text-black w-full max-w-sm rounded-xl p-6">
+                <h3 className="text-lg font-bold mb-3">Delete Lesson</h3>
+
+                <p className="mb-5">Are you sure you want to delete this lesson?</p>
+
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setIsDeleteModalOpen(false)}
+                    className="bg-gray-300 cursor-pointer px-4 py-1 rounded"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={handleDeleteLesson}
+                    className="bg-red-500 cursor-pointer text-white px-4 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* User Info */}
           <div className="flex gap-3 items-center mb-3">
@@ -168,14 +229,14 @@ const MyLesson = () => {
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                className="bg-gray-300 px-4 py-1 rounded"
+                className="bg-gray-300 cursor-pointer px-4 py-1 rounded"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleUpdateLesson}
-                className="bg-green-500 text-white px-4 py-1 rounded"
+                className="bg-green-500 cursor-pointer text-white px-4 py-1 rounded"
               >
                 Save
               </button>
