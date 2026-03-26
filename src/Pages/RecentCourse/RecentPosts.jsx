@@ -22,6 +22,7 @@ const RecentPosts = () => {
   });
   const limitedPosts = posts.slice(0, 6);
 
+
   // 🔹 Like handler
   const handleLike = async (id, liked) => {
     if (!user) {
@@ -31,12 +32,12 @@ const RecentPosts = () => {
     queryClient.invalidateQueries(["posts"]);
   };
   // 🔹 Favorite
-  const handleFavorite = async (id, favorite) => {
+  const handleFavorite = async (id) => {
     if (!user) {
       return toast.error("Please Login and Favorite this posts");
     }
     await axiosSecure.patch(`/posts/favorite/${id}`, {
-      favorite: !favorite,
+      email: user.email
     });
     queryClient.invalidateQueries(["posts"]);
   };
@@ -45,7 +46,6 @@ const RecentPosts = () => {
     <div className="md:w-6/12  mx-auto">
       <div className="divParent   gap-7">
         {limitedPosts.map((post) => {
-          console.log(post);
           return (
             <div key={post._id} className="my-5 p-5  rounded-xl bg-gray-800 text-white relative">
               {/* ⋮ Edit */}
@@ -62,10 +62,12 @@ const RecentPosts = () => {
                 />
                 <div>
                   <h3 className="font-bold">{post.userName}</h3>
-                  <p className="text-gray-400 text-sm">{new Date(post.createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}</p>
+                  <p className="text-gray-400 text-sm">
+                    {new Date(post.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
                 </div>
               </div>
 
@@ -97,17 +99,22 @@ const RecentPosts = () => {
                 </button>
 
                 <div
-                  onClick={() => handleFavorite(post._id, post.favorite)}
-                  className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${post.favorite ? "text-blue-400 " : ""}`}
-                >
-                  ❤️ Favorite
-                </div>
+              onClick={() => handleFavorite(post._id)}
+              className={`cursor-pointer ${
+                post.favorite?.includes(user?.email)
+                  ? "text-green-600 flex justify-center items-center gap-2 p-2"
+                  : "flex justify-center items-center gap-2 p-2"
+              }`}
+            >
+              ❤️ Favorite
+            </div>
 
                 <Link
                   to={`/lesson-details/${post._id}`}
                   className="flex justify-center items-center gap-2 p-2"
                 >
-                  <FaRegComment />Comment ({post.comments?.length || 0})
+                  <FaRegComment />
+                  Comment ({post.comments?.length || 0})
                 </Link>
 
                 <div className="flex justify-center items-center gap-2 p-2">

@@ -31,12 +31,12 @@ const PublicLesson = () => {
     queryClient.invalidateQueries({ queryKey: ["public-posts"] });
   };
   // 🔹 Favorite
-  const handleFavorite = async (id, favorite) => {
+  const handleFavorite = async (id) => {
     if (!user) {
       return toast.error("Please Login and Favorite this posts");
     }
     await axiosSecure.patch(`/posts/favorite/${id}`, {
-      favorite: !favorite,
+      email: user.email
     });
     queryClient.invalidateQueries(["posts"]);
   };
@@ -93,12 +93,12 @@ const PublicLesson = () => {
             </button>
 
             <div
-              onClick={() => handleFavorite(lesson._id, lesson.favorite)}
-              className={
-                lesson.favorite
-                  ? "text-red-500 flex justify-center items-center gap-2 p-2 cursor-pointer"
-                  : "flex justify-center items-center gap-2 p-2 cursor-pointer"
-              }
+              onClick={() => handleFavorite(lesson._id)}
+              className={`cursor-pointer ${
+                lesson.favorite?.includes(user?.email)
+                  ? "text-green-600 flex justify-center items-center gap-2 p-2"
+                  : "flex justify-center items-center gap-2 p-2"
+              }`}
             >
               ❤️ Favorite
             </div>

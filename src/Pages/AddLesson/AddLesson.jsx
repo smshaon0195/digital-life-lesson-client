@@ -22,8 +22,13 @@ const AddLesson = () => {
   const { data: lessons = [], error } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/posts");
-      return res.json();
+      try {
+        const res = await axiosSecure.get("/posts");
+        return res.data;
+      } catch (error) {
+        console.error(error);
+        return []; // fallback
+      }
     },
   });
 
@@ -59,10 +64,11 @@ const AddLesson = () => {
   };
 
   // 🔹 Favorite
-  const handleFavorite = async (id, favorite) => {
+  const handleFavorite = async (id) => {
     await axiosSecure.patch(`/posts/favorite/${id}`, {
-      favorite: !favorite,
+      email: user?.email,
     });
+
     queryClient.invalidateQueries(["posts"]);
   };
 
@@ -180,11 +186,13 @@ const AddLesson = () => {
                 </Link>
 
                 <button
-                  onClick={() => handleFavorite(lesson._id, lesson.favorite)}
-                  className={lesson.favorite ? "text-red-500 cursor-pointer" : "cursor-pointer"}
-                >
-                  ❤️ Favorite
-                </button>
+  onClick={() => handleFavorite(lesson._id)}
+  className={`cursor-pointer ${
+    lesson.favorite?.includes(user?.email) ? "text-green-600" : ""
+  }`}
+>
+  ❤️ Favorite
+</button>
 
                 <button>🔗 Share</button>
               </div>

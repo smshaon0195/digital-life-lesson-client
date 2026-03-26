@@ -1,37 +1,54 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
   const { registerUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
-    registerUser(data.email, data.password, data.name)
-      .then((res) => {
-        console.log(res.user);
-        toast.success("Login Succesfull");
-      })
-      .catch((error) => {
-  const message = error.message.replace("Firebase:", "");
-  toast.error(message);
-});
-
-  };
-
   const password = watch("password", "");
+
+  const onSubmit = async (data) => {
+    try {
+      // 🔹 Firebase Register
+      const res = await registerUser(data.email, data.password, data.name);
+
+      // 🔹 Backend এ user save
+      const userData = {
+        uid: res.user.uid,
+        email: res.user.email,
+        name: res.user.displayName || data.name,
+      };
+
+      await axiosSecure.post("/users", userData);
+
+      toast.success("Registration Successful");
+
+      reset(); // form clear
+      navigate("/"); // redirect (optional)
+
+    } catch (error) {
+      const message = error.message.replace("Firebase:", "");
+      toast.error(message);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-base-200 to-base-300 px-4">
       <div className="w-full max-w-5xl bg-base-100 shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
+        
         {/* Left Side */}
         <div className="flex flex-col justify-center p-10 bg-gradient-to-br from-primary/10 to-secondary/10">
           <h1 className="text-5xl font-bold mb-6">Create Account</h1>
@@ -43,20 +60,25 @@ const Register = () => {
 
         {/* Right Side */}
         <div className="p-10">
-          <h2 className="text-3xl font-bold mb-6 text-center">Register Your Account</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            Register Your Account
+          </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
             {/* Name */}
             <div>
               <label className="label font-medium">Name</label>
               <input
-                {...register("name", { required: true })}
+                {...register("name", { required: "Name is required" })}
                 type="text"
                 placeholder="Your Name"
-                className="input input-bordered w-full focus:ring-2 focus:ring-primary"
+                className="input input-bordered w-full"
               />
-              {errors.name?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">Name is required</p>
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -65,20 +87,21 @@ const Register = () => {
               <label className="label font-medium">Email</label>
               <input
                 {...register("email", {
-                  required: true,
-                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Enter a valid email",
+                  },
                 })}
                 type="email"
                 placeholder="Your Email"
-                className="input input-bordered w-full focus:ring-2 focus:ring-primary"
+                className="input input-bordered w-full"
               />
 
-              {errors.email?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">Email is required</p>
-              )}
-
-              {errors.email?.type === "pattern" && (
-                <p className="text-red-500 text-sm mt-1">Enter a valid email</p>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -86,18 +109,22 @@ const Register = () => {
             <div>
               <label className="label font-medium">Password</label>
               <input
-                {...register("password", { required: true, minLength: 6 })}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
                 type="password"
                 placeholder="Password"
-                className="input input-bordered w-full focus:ring-2 focus:ring-primary"
+                className="input input-bordered w-full"
               />
 
-              {errors.password?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">Password is required</p>
-              )}
-
-              {errors.password?.type === "minLength" && (
-                <p className="text-red-500 text-sm mt-1">Password must be at least 6 characters</p>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -106,21 +133,29 @@ const Register = () => {
               <label className="label font-medium">Confirm Password</label>
               <input
                 {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => value === password || "Passwords do not match",
+                  required: "Confirm Password is required",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
                 })}
                 type="password"
                 placeholder="Confirm Password"
-                className="input input-bordered w-full focus:ring-2 focus:ring-primary"
+                className="input input-bordered w-full"
               />
 
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
 
-            <button type="submit" className="btn btn-primary w-full mt-2">
-              Register
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn btn-primary w-full mt-2"
+            >
+              {isSubmitting ? "Registering..." : "Register"}
             </button>
           </form>
 

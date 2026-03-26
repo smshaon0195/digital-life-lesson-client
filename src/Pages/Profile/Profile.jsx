@@ -10,7 +10,6 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  // console.log(user)
 
   // Fetch user profile from backend
   const { data: profile, isLoading } = useQuery({

@@ -40,7 +40,11 @@ const Footer = () => {
         </form>
       </footer>
       <div className="siteRevarse mx-auto text-center">
-        All Site Revarse in <a className="text-green-600" href="">SH repo</a> @2026
+        All Site Revarse in{" "}
+        <a className="text-green-600" href="">
+          SM Shaon
+        </a>{" "}
+        @2026
       </div>
     </div>
   );

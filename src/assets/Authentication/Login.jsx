@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const {
@@ -15,20 +16,31 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
+  const axiosSecure = useAxiosSecure();
 
   const handelLogin = (data) => {
-    console.log(data);
-    (signInUser(data.email, data.password)
+    signInUser(data.email, data.password)
       .then((result) => {
-        toast.success("Login Succesfull");
-        console.log(result.user);
-        
-        navigate(location?.state || "/");
+        const user = result.user;
+
+        // Get Firebase JWT
+        user.getIdToken().then((token) => {
+          localStorage.setItem("access-token", token);
+
+          const userDetails = {
+            uid: user.uid,
+            email: user.email,
+            name: user.displayName,
+          };
+          axiosSecure.put("/users", userDetails);
+          toast.success("Login Successful");
+          navigate(location?.state || "/");
+        });
       })
       .catch((error) => {
         console.log(error);
-      }),
-      console.log(data));
+        toast.error("Login failed: " + error.message);
+      });
   };
 
   return (
