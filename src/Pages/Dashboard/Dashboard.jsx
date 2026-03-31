@@ -2,21 +2,33 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import { Link } from "react-router";
 
 const Dashboard = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const { data: posts = [] } = useQuery({
-    queryKey: ["Posts", user.email],
+    queryKey: ["favoritePosts", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const result = await axiosSecure.get(`/posts?email=${user.email}`);
-      return result.data;
+      const res = await axiosSecure.get(`/posts`);
+      return res.data;
     },
   });
   console.log(posts);
-  const favoratePosts = posts.filter((post) => post.favorite);
-  console.log(favoratePosts);
+  const favoritePostsByUser = posts.filter(
+    (lesson) => Array.isArray(lesson.favorite) && lesson.favorite.includes(user?.email),
+  );
+  const { data: myPosts = [] } = useQuery({
+    queryKey: ["myPosts", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/posts?email=${user?.email}`);
+      return res.data;
+    },
+  });
+
+  console.log(myPosts);
 
   return (
     <div className="bg-gray-100 text-black min-h-screen top-15">
@@ -39,46 +51,22 @@ const Dashboard = () => {
         <main className="flex-1 p-6 space-y-8">
           {/* Stats */}
           <section className="grid text-center w-[95%] mx-auto grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white text-black p-4 rounded shadow">
-              <p>Total Lessons</p>
-              <h2 className="text-2xl font-bold">{posts.length}</h2>
-            </div>
-            <div className="bg-white p-4 rounded shadow">
-              <p>Total Favorites</p>
-              <h2 className="text-2xl font-bold">{favoratePosts.length}</h2>
-            </div>
+            <Link to={"/dashboard/my-Lesson"}>
+              <div className="bg-white text-black p-4 rounded shadow">
+                <p>My Total Lessons</p>
+                <h2 className="text-2xl font-bold">{myPosts.length}</h2>
+              </div>
+            </Link>
+            <Link to={"/dashboard/favorites"}>
+              <div className="bg-white p-4 rounded shadow">
+                <p>My Total Favorites</p>
+                <h2 className="text-2xl font-bold">{favoritePostsByUser.length || 0}</h2>
+              </div>
+            </Link>
             <div className="bg-white p-4 rounded shadow">
               <p>Recent Lessons</p>
-              <h2 className="text-2xl font-bold">3</h2>
+              <h2 className="text-2xl font-bold">{posts.slice(0, 3).length}</h2>
             </div>
-          </section>
-
-          {/* My Lessons */}
-          <section className="bg-white w-[95%] mx-auto p-6 rounded shadow">
-            <h2 className="font-semibold mb-4">My Lessons</h2>
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b">
-                  <th>Title</th>
-                  <th>Visibility</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map((post) => {
-                  return (
-                    <tr key={post._id} className="border-b">
-                      <td>{post.text}</td>
-                      <td>Public</td>
-                      <td className="space-x-2">
-                        <button className="text-blue-600">Update</button>
-                        <button className="text-red-600">Delete</button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
           </section>
         </main>
       </div>

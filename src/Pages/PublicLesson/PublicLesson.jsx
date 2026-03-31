@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import Loding from "../NoData/Loding";
 
 const PublicLesson = () => {
   const { user } = useAuth();
@@ -14,7 +15,7 @@ const PublicLesson = () => {
   const queryClient = useQueryClient();
 
   // 🔹 Fetch ALL PUBLIC posts
-  const { data: lessons = [] } = useQuery({
+  const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["public-posts"],
     queryFn: async () => {
       const res = await axiosSecure.get("/posts?visibility=public");
@@ -36,10 +37,13 @@ const PublicLesson = () => {
       return toast.error("Please Login and Favorite this posts");
     }
     await axiosSecure.patch(`/posts/favorite/${id}`, {
-      email: user.email
+      email: user.email,
     });
     queryClient.invalidateQueries(["posts"]);
   };
+  if (isLoading) {
+    return <Loding></Loding>;
+  }
   return (
     <div className="max-w-2xl mx-auto mt-6">
       {lessons.map((lesson) => (

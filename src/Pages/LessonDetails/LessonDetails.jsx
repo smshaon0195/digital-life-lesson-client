@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import { BsThreeDots } from "react-icons/bs";
-import NoData from "../NoData/NoData";
+import NoComment from "../NoData/NoComment";
 
 const LessonDetails = () => {
   const { id } = useParams();
@@ -119,11 +119,7 @@ const LessonDetails = () => {
         </div>
 
         {/* Comment list */}
-        {lesson.comments?.length === 0 && (
-       
-          <NoData></NoData>
-         
-        )}
+        {lesson.comments?.length === 0 && <NoComment></NoComment>}
 
         {lesson.comments?.map((item, index) => {
           const comment = item.comment;
@@ -132,9 +128,9 @@ const LessonDetails = () => {
             <div key={index} className="bg-gray-100 rounded-lg p-3 relative">
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                  <img src={comment.userPhoto} className="w-9 h-9 rounded-lg" alt="" />
+                  <img src={comment.userPhoto || "https://shorturl.at/UI6JP"} className="w-9 h-9 rounded-lg" alt="" />
                   <div>
-                    <p className="font-semibold">{comment.userName}</p>
+                    <p className="font-semibold">{comment.userName || user.displayName}</p>
                     <p className="text-sm text-gray-500">{formatTime(comment.CreatedAt)}</p>
                   </div>
                 </div>

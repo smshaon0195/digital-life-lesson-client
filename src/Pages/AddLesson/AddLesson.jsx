@@ -180,19 +180,17 @@ const AddLesson = () => {
                 >
                   👍 Like ({lesson.likes})
                 </button>
-
+                <button
+                  onClick={() => handleFavorite(lesson._id)}
+                  className={`cursor-pointer ${
+                    lesson.favorite?.includes(user?.email) ? "text-green-600" : ""
+                  }`}
+                >
+                  ❤️ Favorite
+                </button>
                 <Link to={`/lesson-details/${lesson._id}`}>
                   💬 Comment ({lesson.comments?.length || 0})
                 </Link>
-
-                <button
-  onClick={() => handleFavorite(lesson._id)}
-  className={`cursor-pointer ${
-    lesson.favorite?.includes(user?.email) ? "text-green-600" : ""
-  }`}
->
-  ❤️ Favorite
-</button>
 
                 <button>🔗 Share</button>
               </div>

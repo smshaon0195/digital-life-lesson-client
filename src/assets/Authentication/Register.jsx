@@ -32,12 +32,12 @@ const Register = () => {
         name: res.user.displayName || data.name,
       };
 
-      await axiosSecure.post("/users", userData);
+      await axiosSecure.put("/users", userData);
 
-      toast.success("Registration Successful");
+      toast.success("Registration Successful Please Login");
 
       reset(); // form clear
-      navigate("/"); // redirect (optional)
+      navigate("/auth/login"); // redirect (optional)
 
     } catch (error) {
       const message = error.message.replace("Firebase:", "");

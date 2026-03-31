@@ -34,7 +34,6 @@ const Favorites = () => {
     setFavorites(userHasFavorites);
   }, [userHasFavorites]);
 
-  console.log(favoritePosts);
   // handle favorite toggle
   const handleFavorite = async (id) => {
     await axiosSecure.patch(`/posts/favorite/${id}`, {

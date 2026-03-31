@@ -16,14 +16,18 @@ const AuthProvider = ({ children }) => {
 
   const registerUser = async (email, password, name) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await signOut(auth); // চাইলে শেষে logout
+
     const user = userCredential.user;
 
-    // Update displayName
     await updateProfile(user, { displayName: name });
+
+    return userCredential; // ✅ return দাও
   };
   const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
+
   const updateUserProfile = (upDateDetails) => {
     return updateProfile(auth.currentUser, upDateDetails);
   };
