@@ -40,8 +40,9 @@ const Dashboard = () => {
           <div className="text-center border-amber-200 border-2 px-3 sm:border-0">
             <h2 className="text-2xl font-bold">
               Wellcome <br />
-              <span className="text-blue-600 font-serif">{user.displayName} ❤️</span>{" "}
+              <span className="text-blue-600 font-serif">❤️ {user.displayName} ❤️</span>{" "}
             </h2>
+            <p>(Free User)</p>
           </div>
         </div>
       </header>

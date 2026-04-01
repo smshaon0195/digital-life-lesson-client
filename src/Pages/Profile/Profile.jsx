@@ -232,7 +232,7 @@ const Profile = () => {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="w-full bg-amber-500 text-white py-3 rounded-xl font-semibold hover:bg-amber-600 transition"
+              className="w-full bg-amber-500 text-white py-3 rounded-xl font-semibold hover:bg-amber-600 transition cursor-pointer"
             >
               Save Profile
             </button>

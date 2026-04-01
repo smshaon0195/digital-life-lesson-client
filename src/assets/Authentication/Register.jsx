@@ -157,6 +157,7 @@ const Register = () => {
             >
               {isSubmitting ? "Registering..." : "Register"}
             </button>
+            
           </form>
 
           <p className="mt-4 text-center text-gray-500">

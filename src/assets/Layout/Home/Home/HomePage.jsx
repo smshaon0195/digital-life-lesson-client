@@ -1,5 +1,4 @@
 import React from "react";
-import SlideCarosol from "../../../Slider/SlideCarosol";
 import Slider1 from "../../../Slider/Slider1";
 import SupportSyestem from "../../../../Pages/SupportSyestem/SupportSyestem";
 import LarningSupport from "../../../../Pages/LarnigSupport/LarningSupport";
@@ -11,8 +10,7 @@ import HomePostLayout from "../HomeLayout/HomePostLayout";
 const HomePage = () => {
   return (
     <div>
-      {/* <SlideCarosol></SlideCarosol> */}
-      {/* <Slider1></Slider1> */}
+      <Slider1></Slider1>
       <SupportSyestem></SupportSyestem>
       <LarningSupport></LarningSupport>
       

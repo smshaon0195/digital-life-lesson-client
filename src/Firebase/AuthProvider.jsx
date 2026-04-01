@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "./Firebase.innit";
 import { AuthContext } from "./AuthContext";
+import toast from "react-hot-toast";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -27,7 +30,11 @@ const AuthProvider = ({ children }) => {
   const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
+ const signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
 
+  return signInWithPopup(auth, provider); // ✅ direct return
+};
   const updateUserProfile = (upDateDetails) => {
     return updateProfile(auth.currentUser, upDateDetails);
   };
@@ -59,6 +66,7 @@ const AuthProvider = ({ children }) => {
     loding,
     logOut,
     updateUserProfile,
+    signInWithGoogle,
   };
 
   return <AuthContext value={Authinfo}>{children}</AuthContext>;

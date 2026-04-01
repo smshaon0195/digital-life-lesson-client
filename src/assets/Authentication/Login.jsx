@@ -12,18 +12,25 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { signInUser } = useAuth();
+  const { signInUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const axiosSecure = useAxiosSecure();
 
-  const handelLogin = (data) => {
-    signInUser(data.email, data.password)
+  // ✅ Google Login
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
       .then((result) => {
-        const user = result.user;
+        console.log(result);
 
-        // Get Firebase JWT
+        const user = result?.user;
+
+        // ✅ Safety check
+        if (!user) {
+          toast.error("User not found");
+          return;
+        }
+
         user.getIdToken().then((token) => {
           localStorage.setItem("access-token", token);
 
@@ -32,7 +39,41 @@ const Login = () => {
             email: user.email,
             name: user.displayName,
           };
+
           axiosSecure.put("/users", userDetails);
+
+          toast.success("Google Login Successful");
+          navigate(location?.state || "/");
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Google Login failed: " + error.message);
+      });
+  };
+
+  // ✅ Email + Password Login
+  const handelLogin = (data) => {
+    signInUser(data.email, data.password)
+      .then((result) => {
+        const user = result?.user;
+
+        if (!user) {
+          toast.error("User not found");
+          return;
+        }
+
+        user.getIdToken().then((token) => {
+          localStorage.setItem("access-token", token);
+
+          const userDetails = {
+            uid: user.uid,
+            email: user.email,
+            name: user.displayName,
+          };
+
+          axiosSecure.put("/users", userDetails);
+
           toast.success("Login Successful");
           navigate(location?.state || "/");
         });
@@ -53,14 +94,16 @@ const Login = () => {
         <div className="flex flex-col justify-center p-10 bg-gradient-to-br from-primary/10 to-secondary/10">
           <h1 className="text-5xl font-bold mb-6">Login now!</h1>
           <p className="text-base-content/70 leading-relaxed">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-            exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
+            a id nisi.
           </p>
         </div>
 
         {/* Right Side */}
         <div className="p-10">
           <div className="space-y-4">
+            {/* Email */}
             <div>
               <label className="label font-medium">Email</label>
               <input
@@ -71,12 +114,13 @@ const Login = () => {
               />
 
               {errors.email?.type === "required" && (
-                <p role="alert" className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1">
                   Email is required
                 </p>
               )}
             </div>
 
+            {/* Password */}
             <div>
               <label className="label font-medium">Password</label>
               <input
@@ -87,18 +131,38 @@ const Login = () => {
               />
             </div>
 
+            {/* Forgot */}
             <div className="text-right">
-              <a className="link link-hover text-sm">Forgot password?</a>
+              <a className="link link-hover text-sm">
+                Forgot password?
+              </a>
             </div>
 
+            {/* Email Login */}
             <button type="submit" className="btn btn-primary w-full mt-2">
               Login
             </button>
 
-            <p className="text-center pt-2">
+            <span className="text-center flex justify-center items-center">
+              Or
+            </span>
+
+            {/* ✅ Google Login FIXED */}
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="btn btn-secondary w-full"
+            >
+              Google Login
+            </button>
+
+            {/* Register */}
+            <p className="text-center">
               You have no account?{" "}
               <Link to={"/auth/register"}>
-                <span className="text-green-500 font-semibold">Register Now</span>
+                <span className="text-green-500 font-semibold">
+                  Register Now
+                </span>
               </Link>
             </p>
           </div>

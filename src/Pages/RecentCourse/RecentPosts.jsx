@@ -22,7 +22,6 @@ const RecentPosts = () => {
   });
   const limitedPosts = posts.slice(0, 6);
 
-
   // 🔹 Like handler
   const handleLike = async (id, liked) => {
     if (!user) {
@@ -37,7 +36,7 @@ const RecentPosts = () => {
       return toast.error("Please Login and Favorite this posts");
     }
     await axiosSecure.patch(`/posts/favorite/${id}`, {
-      email: user.email
+      email: user.email,
     });
     queryClient.invalidateQueries(["posts"]);
   };
@@ -88,33 +87,37 @@ const RecentPosts = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
+              <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl gap-5 overflow-hidden">
                 <button
                   onClick={() => handleLike(post._id, post.liked)}
                   className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${
-                    post.liked ? "text-blue-400" : "cursor-pointer"
+                    post.liked ? "text-blue-400" : "cursor-pointer "
                   }`}
                 >
-                  <AiOutlineLike /> Like ({post.likes})
+                  <div className="whitespace-nowrap flex items-center">
+                    <AiOutlineLike /> Like ({post.likes})
+                  </div>
                 </button>
 
                 <div
-              onClick={() => handleFavorite(post._id)}
-              className={`cursor-pointer ${
-                post.favorite?.includes(user?.email)
-                  ? "text-green-600 flex justify-center items-center gap-2 p-2"
-                  : "flex justify-center items-center gap-2 p-2"
-              }`}
-            >
-              ❤️ Favorite
-            </div>
+                  onClick={() => handleFavorite(post._id)}
+                  className={`cursor-pointer  ${
+                    post.favorite?.includes(user?.email)
+                      ? "text-green-600 flex   justify-center items-center gap-2 p-2"
+                      : "flex justify-center whitespace-nowrap items-center gap-2 p-2"
+                  }`}
+                >
+                  ❤️ Favorite
+                </div>
 
                 <Link
                   to={`/lesson-details/${post._id}`}
-                  className="flex justify-center items-center gap-2 p-2"
+                  className="flex justify-center items-center  gap-2 p-2"
                 >
-                  <FaRegComment />
-                  Comment ({post.comments?.length || 0})
+                  <div className="flex  gap-2 items-center  ">
+                    <FaRegComment />
+                    Comment ({post.comments?.length || 0})
+                  </div>
                 </Link>
 
                 <div className="flex justify-center items-center gap-2 p-2">
