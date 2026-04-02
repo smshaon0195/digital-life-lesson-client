@@ -14,6 +14,9 @@ import Favorites from "../../../Pages/Favorites/Favorites";
 import LessonDetails from "../../../Pages/LessonDetails/LessonDetails";
 import ProfileSetting from "../../../Pages/ProfileSetting/ProfileSetting";
 import FotgotPassword from "../../Authentication/FotgotPassword";
+import PricingDetails from "../../../Pages/PricingCards/PricingDetails";
+import Payment from "../../../Pages/PricingCards/Payment";
+import PaymentSuccess from "../../../Pages/PricingCards/PaymentSuccess";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -93,10 +96,30 @@ export const router = createBrowserRouter([
       },
       {
         path: "/auth/password-reset",
+        element: <FotgotPassword></FotgotPassword>,
+      },
+      {
+        path: "/pricing/:name",
         element: (
-          
-            <FotgotPassword></FotgotPassword>
-          
+          <PrivateRoute>
+            <PricingDetails></PricingDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/user-upgrade/payment",
+        element: (
+          <PrivateRoute>
+            <Payment></Payment>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "user-upgrade/payment-succes",
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess></PaymentSuccess>
+          </PrivateRoute>
         ),
       },
     ],

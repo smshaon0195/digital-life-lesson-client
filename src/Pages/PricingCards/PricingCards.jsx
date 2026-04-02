@@ -1,83 +1,118 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const PricingCards = () => {
-  const plans = [
+  const navigate = useNavigate();
+
+
+
+ const plans = [
     {
-      name: "Basic",
-      price: "$3",
-      features: [
-        "Limited Photos",
-        "Secure Online Transfer",
-        "5 GB Cloud Storage",
-        "24/7 Customer Service",
-        "Automatic Backup",
-      ],
-      buttonColor: "bg-black text-white",
-      featured: false,
+      name: "Base",
+      price: "Free",
+      features: ["Calendar and Scheduling", "Broadcasts", "Conferencing"],
+      button: "Selected Plan",
+      active: false,
     },
     {
-      name: "Business",
-      price: "$22",
+      name: "Premium",
+      price: "$10",
       features: [
-        "Unlimited Photos",
-        "Secure Online Transfer",
-        "15 GB Cloud Storage",
-        "24/7 Customer Service",
-        "Automatic Backup",
+        "Calendar and Scheduling",
+        "Conferencing",
+        "Unlimited Data Retention",
       ],
-      buttonColor: "bg-orange-500 text-white",
-      featured: true,
+      button: "Upgrade to Premium",
+      active: true,
     },
     {
       name: "Unlimited",
       price: "$25",
       features: [
-        "Unlimited Photos",
-        "Secure Online Transfer",
-        "50 GB Cloud Storage",
-        "24/7 Customer Service",
-        "Automatic Backup",
+        "Unlimited Plans",
+        "Unlimited Events",
+        "Unlimited Video Conferencing",
       ],
-      buttonColor: "bg-black text-white",
-      featured: false,
+      button: "Upgrade to Unlimited",
+      active: false,
     },
   ];
 
   return (
-    <div className="bg-gray-50 py-20">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-5">
-        {plans.map((plan, index) => (
-          <div
-            key={index}
-            className={`relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center transition transform hover:scale-105`}
-          >
-            {plan.featured && (
-              <span className="absolute top-0 right-0 bg-orange-500 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">
-                Featured
-              </span>
-            )}
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 py-20">
+      <div className="max-w-6xl w-full text-center">
 
-            <h3 className="text-2xl font-bold text-orange-500 mb-4">{plan.name}</h3>
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          SIMPLE, TRANSPARENT PRICING
+        </h1>
+        <p className="text-gray-400 mb-12">
+          Choose the plan that’s right for you
+        </p>
 
-            <div className="text-4xl text-black font-extrabold mb-4">{plan.price}</div>
-            <div className="text-gray-500 mb-6">per month</div>
+        {/* Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
 
-            <ul className="mb-6 space-y-2 text-gray-700">
-              {plan.features.map((feature, idx) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <span className="text-orange-500">✔</span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-
-            <button
-              className={`w-full py-3 cursor-pointer rounded-md font-bold ${plan.buttonColor} hover:opacity-90 transition`}
+          {plans.map((plan, index) => (
+            <div
+              key={index}
+              className={`relative rounded-2xl p-8 border transition-all duration-300
+              ${
+                plan.active
+                  ? "bg-[#111] border-orange-400 shadow-[0_0_40px_rgba(255,165,0,0.4)] scale-105"
+                  : "bg-[#0f0f0f] border-gray-800"
+              }`}
             >
-              Purchase
-            </button>
-          </div>
-        ))}
+              {/* Badge */}
+              {plan.active && (
+                <span className="absolute top-4 right-4 bg-orange-400 text-black text-xs px-3 py-1 rounded-full font-bold">
+                  MOST POPULAR
+                </span>
+              )}
+
+              {/* Name */}
+              <h3
+                className={`text-xl mb-3 ${
+                  plan.active ? "text-orange-400" : "text-gray-300"
+                }`}
+              >
+                {plan.name}
+              </h3>
+
+              {/* Price */}
+              <div className="text-4xl font-extrabold mb-2">
+                {plan.price}
+                {plan.price !== "Free" && (
+                  <span className="text-sm text-gray-400"> /month</span>
+                )}
+              </div>
+
+              {/* Features */}
+              <ul className="mt-6 space-y-3 text-gray-300 text-left">
+                {plan.features.map((f, i) => (
+                  <li key={i} className="flex gap-2 items-center">
+                    <span className="text-green-400">✔</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Button */}
+              <button
+               onClick={() => navigate(`/pricing/${plan.name}`)}
+                className={`mt-8 w-full cursor-pointer py-3 rounded-lg font-semibold transition
+                ${
+                  plan.active
+                    ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-black hover:opacity-90"
+                    : "bg-gray-800 text-white hover:bg-gray-700"
+                }`}
+              >
+                {plan.button}
+              </button>
+            </div>
+          ))}
+
+        </div>
       </div>
     </div>
   );
