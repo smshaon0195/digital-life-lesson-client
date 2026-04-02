@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import {
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -11,7 +13,6 @@ import {
 } from "firebase/auth";
 import { auth } from "./Firebase.innit";
 import { AuthContext } from "./AuthContext";
-import toast from "react-hot-toast";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -30,11 +31,23 @@ const AuthProvider = ({ children }) => {
   const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
- const signInWithGoogle = () => {
-  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
 
-  return signInWithPopup(auth, provider); // ✅ direct return
-};
+    return signInWithPopup(auth, provider);
+  };
+
+  const signInwithFacebook = () => {
+    const provider = new FacebookAuthProvider();
+    return signInWithPopup(auth, provider);
+  };
+  const passwordResetEmail = (email) => {
+    return sendPasswordResetEmail(auth, email)
+      .then(() => {})
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   const updateUserProfile = (upDateDetails) => {
     return updateProfile(auth.currentUser, upDateDetails);
   };
@@ -67,6 +80,8 @@ const AuthProvider = ({ children }) => {
     logOut,
     updateUserProfile,
     signInWithGoogle,
+    passwordResetEmail,
+    signInwithFacebook,
   };
 
   return <AuthContext value={Authinfo}>{children}</AuthContext>;

@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { FaFacebook, FaGoogle } from "react-icons/fa6";
 
 const Login = () => {
   const {
@@ -12,7 +13,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { signInUser, signInWithGoogle } = useAuth();
+  const { signInUser, signInWithGoogle, signInwithFacebook } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
@@ -51,7 +52,40 @@ const Login = () => {
         toast.error("Google Login failed: " + error.message);
       });
   };
+  const handleFacebookLogin = () => {
+    toast("Update is Comming Soon");
+    // signInwithFacebook()
+    //   .then((result) => {
+    //     console.log(result);
 
+    //     const user = result?.user;
+
+    //     // ✅ Safety check
+    //     if (!user) {
+    //       toast.error("User not found");
+    //       return;
+    //     }
+
+    //     user.getIdToken().then((token) => {
+    //       localStorage.setItem("access-token", token);
+
+    //       const userDetails = {
+    //         uid: user.uid,
+    //         email: user.email,
+    //         name: user.displayName,
+    //       };
+
+    //       axiosSecure.put("/users", userDetails);
+
+    //       toast.success("Facebook Login Successful");
+    //       navigate(location?.state || "/");
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     toast.error("Google Login failed: " + error.message);
+    //   });
+  };
   // ✅ Email + Password Login
   const handelLogin = (data) => {
     signInUser(data.email, data.password)
@@ -94,9 +128,8 @@ const Login = () => {
         <div className="flex flex-col justify-center p-10 bg-gradient-to-br from-primary/10 to-secondary/10">
           <h1 className="text-5xl font-bold mb-6">Login now!</h1>
           <p className="text-base-content/70 leading-relaxed">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
+            exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
           </p>
         </div>
 
@@ -114,9 +147,7 @@ const Login = () => {
               />
 
               {errors.email?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">
-                  Email is required
-                </p>
+                <p className="text-red-500 text-sm mt-1">Email is required</p>
               )}
             </div>
 
@@ -132,37 +163,41 @@ const Login = () => {
             </div>
 
             {/* Forgot */}
-            <div className="text-right">
-              <a className="link link-hover text-sm">
-                Forgot password?
-              </a>
-            </div>
+            <Link to={"/auth/password-reset"}>
+              <div className="text-right">
+                <a className="link link-hover text-sm">Forgot password?</a>
+              </div>
+            </Link>
 
             {/* Email Login */}
             <button type="submit" className="btn btn-primary w-full mt-2">
               Login
             </button>
 
-            <span className="text-center flex justify-center items-center">
-              Or
-            </span>
+            <span className="text-center flex justify-center items-center">Or</span>
 
-            {/* ✅ Google Login FIXED */}
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              className="btn btn-secondary w-full"
-            >
-              Google Login
-            </button>
+            <div className="flex gap-3 mx-auto justify-center">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className=" btn-secondary cursor-pointer text-2xl text-green-400 bg-white rounded-xl p-2 inline-flex"
+              >
+                <FaGoogle />
+              </button>
+              <button
+                type="button"
+                onClick={handleFacebookLogin}
+                className=" btn-secondary cursor-pointer text-2xl text-green-400 bg-white rounded-xl p-2 inline-flex"
+              >
+                <FaFacebook />
+              </button>
+            </div>
 
             {/* Register */}
             <p className="text-center">
               You have no account?{" "}
               <Link to={"/auth/register"}>
-                <span className="text-green-500 font-semibold">
-                  Register Now
-                </span>
+                <span className="text-green-500 font-semibold">Register Now</span>
               </Link>
             </p>
           </div>

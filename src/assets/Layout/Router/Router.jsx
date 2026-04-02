@@ -13,6 +13,7 @@ import Profile from "../../../Pages/Profile/Profile";
 import Favorites from "../../../Pages/Favorites/Favorites";
 import LessonDetails from "../../../Pages/LessonDetails/LessonDetails";
 import ProfileSetting from "../../../Pages/ProfileSetting/ProfileSetting";
+import FotgotPassword from "../../Authentication/FotgotPassword";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -61,7 +62,6 @@ export const router = createBrowserRouter([
             <Dashboard></Dashboard>
           </PrivateRoute>
         ),
-        
       },
       {
         path: "/profile",
@@ -89,6 +89,14 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <ProfileSetting></ProfileSetting>
           </PrivateRoute>
+        ),
+      },
+      {
+        path: "/auth/password-reset",
+        element: (
+          
+            <FotgotPassword></FotgotPassword>
+          
         ),
       },
     ],
