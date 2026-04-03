@@ -16,7 +16,7 @@ const PricingCards = () => {
     },
     {
       name: "Premium",
-      price: "$10",
+      price: "10",
       features: [
         "Calendar and Scheduling",
         "Conferencing",
@@ -27,7 +27,7 @@ const PricingCards = () => {
     },
     {
       name: "Unlimited",
-      price: "$25",
+      price: "25",
       features: [
         "Unlimited Plans",
         "Unlimited Events",
@@ -44,7 +44,7 @@ const PricingCards = () => {
 
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          SIMPLE, TRANSPARENT PRICING
+          Chose The Plan and Enjoy
         </h1>
         <p className="text-gray-400 mb-12">
           Choose the plan that’s right for you
@@ -81,7 +81,7 @@ const PricingCards = () => {
 
               {/* Price */}
               <div className="text-4xl font-extrabold mb-2">
-                {plan.price}
+                ${plan.price}
                 {plan.price !== "Free" && (
                   <span className="text-sm text-gray-400"> /month</span>
                 )}

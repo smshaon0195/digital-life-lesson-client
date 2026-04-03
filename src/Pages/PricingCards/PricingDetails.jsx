@@ -33,13 +33,13 @@ const PricingDetails = () => {
     },
     {
       name: "Premium",
-      price: "$10",
+      price: "10",
       desc: "Best for professionals",
       features: ["Calendar and Scheduling", "Conferencing", "Unlimited Data Retention"],
     },
     {
       name: "Unlimited",
-      price: "$25",
+      price: "25",
       desc: "For teams and businesses",
       features: ["Unlimited Plans", "Unlimited Events", "Unlimited Video Conferencing"],
     },
@@ -68,7 +68,7 @@ const PricingDetails = () => {
           <p className="text-gray-400 mb-6">{plan.desc}</p>
 
           <h2 className="text-6xl font-extrabold">
-            {plan.price}
+            ${plan.price}
             {plan.price !== "Free" && <span className="text-lg text-gray-400"> /month</span>}
           </h2>
 

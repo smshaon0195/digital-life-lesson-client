@@ -1,3 +1,4 @@
+import jsPDF from "jspdf";
 import React from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
@@ -5,9 +6,9 @@ import { useLocation } from "react-router";
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-const plan = state?.plan;
+  const plan = state?.plan;
 
-const handleDownloadPDF = () => {
+  const handleDownloadPDF = () => {
     const doc = new jsPDF();
 
     doc.setFontSize(20);
