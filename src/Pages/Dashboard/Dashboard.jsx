@@ -15,7 +15,6 @@ const Dashboard = () => {
       return res.data;
     },
   });
-  console.log(posts);
   const favoritePostsByUser = posts.filter(
     (lesson) => Array.isArray(lesson.favorite) && lesson.favorite.includes(user?.email),
   );
@@ -28,7 +27,17 @@ const Dashboard = () => {
     },
   });
 
-  console.log(myPosts);
+  // user plan is now starting and show this display
+
+  const { data: usersPaymentDetails = [] } = useQuery({
+    queryKey: ["payments", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/payments?email=${user?.email}`);
+      return res.data;
+    },
+  });
+  const planName = usersPaymentDetails?.plan?.planName;
 
   return (
     <div className="bg-gray-100 text-black min-h-screen top-15">
@@ -40,9 +49,22 @@ const Dashboard = () => {
           <div className="text-center border-amber-200 border-2 px-3 sm:border-0">
             <h2 className="text-2xl font-bold">
               Wellcome <br />
-              <span className="text-blue-600 font-serif">❤️ {user.displayName} ❤️</span>{" "}
+              <span className="text-green-800 font-serif">❤️ {user.displayName} ❤️</span>{" "}
             </h2>
-            <p>(Free User)</p>
+
+            <p
+              className={
+                planName === "Premium"
+                  ? "font-bold text-blue-800 "
+                  : planName === "Base"
+                    ? "text-green-500 font-bold "
+                    : planName === "Unlimited"
+                      ? "text-[#db4517] font-bold text-shadow-amber-400"
+                      : ""
+              }
+            >
+              {planName} User
+            </p>
           </div>
         </div>
       </header>

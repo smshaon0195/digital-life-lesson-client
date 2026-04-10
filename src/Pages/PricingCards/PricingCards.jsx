@@ -4,9 +4,7 @@ import { useNavigate } from "react-router";
 const PricingCards = () => {
   const navigate = useNavigate();
 
-
-
- const plans = [
+  const plans = [
     {
       name: "Base",
       price: "Free",
@@ -17,22 +15,14 @@ const PricingCards = () => {
     {
       name: "Premium",
       price: "10",
-      features: [
-        "Calendar and Scheduling",
-        "Conferencing",
-        "Unlimited Data Retention",
-      ],
+      features: ["Calendar and Scheduling", "Conferencing", "Unlimited Data Retention"],
       button: "Upgrade to Premium",
       active: true,
     },
     {
       name: "Unlimited",
       price: "25",
-      features: [
-        "Unlimited Plans",
-        "Unlimited Events",
-        "Unlimited Video Conferencing",
-      ],
+      features: ["Unlimited Plans", "Unlimited Events", "Unlimited Video Conferencing"],
       button: "Upgrade to Unlimited",
       active: false,
     },
@@ -41,18 +31,12 @@ const PricingCards = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 py-20">
       <div className="max-w-6xl w-full text-center">
-
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Chose The Plan and Enjoy
-        </h1>
-        <p className="text-gray-400 mb-12">
-          Choose the plan that’s right for you
-        </p>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">Chose The Plan and Enjoy</h1>
+        <p className="text-gray-400 mb-12">Choose the plan that’s right for you</p>
 
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-8">
-
           {plans.map((plan, index) => (
             <div
               key={index}
@@ -71,20 +55,14 @@ const PricingCards = () => {
               )}
 
               {/* Name */}
-              <h3
-                className={`text-xl mb-3 ${
-                  plan.active ? "text-orange-400" : "text-gray-300"
-                }`}
-              >
+              <h3 className={`text-xl mb-3 ${plan.active ? "text-orange-400" : "text-gray-300"}`}>
                 {plan.name}
               </h3>
 
               {/* Price */}
               <div className="text-4xl font-extrabold mb-2">
                 ${plan.price}
-                {plan.price !== "Free" && (
-                  <span className="text-sm text-gray-400"> /month</span>
-                )}
+                {plan.price !== "Free" && <span className="text-sm text-gray-400"> /month</span>}
               </div>
 
               {/* Features */}
@@ -99,7 +77,7 @@ const PricingCards = () => {
 
               {/* Button */}
               <button
-               onClick={() => navigate(`/pricing/${plan.name}`)}
+                onClick={() => navigate(`/pricing/${plan.name}`)}
                 className={`mt-8 w-full cursor-pointer py-3 rounded-lg font-semibold transition
                 ${
                   plan.active
@@ -111,7 +89,6 @@ const PricingCards = () => {
               </button>
             </div>
           ))}
-
         </div>
       </div>
     </div>

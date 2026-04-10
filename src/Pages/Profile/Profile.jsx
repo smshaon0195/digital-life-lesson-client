@@ -10,7 +10,6 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-
   // Fetch user profile from backend
   const { data: profile, isLoading } = useQuery({
     queryKey: ["user", user?.uid],
@@ -126,7 +125,7 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-amber-400">
             <img
-              src={profileImage || "https://shorturl.at/UI6JP"}
+              src={profile?.photoURL || profileImage || "https://shorturl.at/UI6JP"}
               alt="Profile"
               className="w-full h-full object-cover"
             />
