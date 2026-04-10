@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosSecure = axios.create({
   // backend URL
-  baseURL: "http://localhost:3000",
+  baseURL: "https://digital-life-lesson-server-gmak.vercel.app",
 });
 
 // 🔹 Add token automatically
