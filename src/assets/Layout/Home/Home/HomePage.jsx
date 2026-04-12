@@ -9,7 +9,7 @@ import HomePostLayout from "../HomeLayout/HomePostLayout";
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="">
       <Slider1></Slider1>
       <SupportSyestem></SupportSyestem>
       <LarningSupport></LarningSupport>

@@ -29,11 +29,13 @@ const PricingCards = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 py-20">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 sm:py-20 py-8">
       <div className="max-w-6xl w-full text-center">
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Chose The Plan and Enjoy</h1>
-        <p className="text-gray-400 mb-12">Choose the plan that’s right for you</p>
+        <h1 className="sm:text-4xl text-2xl md:text-5xl font-bold mb-4">
+          Chose The Plan and Enjoy
+        </h1>
+        <p className="text-gray-400 sm:mb-12 mb-5">Choose the plan that’s right for you</p>
 
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-8">

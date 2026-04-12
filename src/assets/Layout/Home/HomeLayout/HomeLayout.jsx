@@ -5,7 +5,7 @@ import Footer from "../../../Fotter/Footer";
 
 const HomeLayout = () => {
   return (
-    <div>
+    <div className="border-2 ">
       <div className="sticky z-50">
         <Navber></Navber>
       </div>

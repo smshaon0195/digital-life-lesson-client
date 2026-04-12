@@ -87,10 +87,10 @@ const RecentPosts = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl gap-5 overflow-hidden">
+              <div className="grid grid-cols-4 mt-4 sm:text-sm text-[12px] bg-gray-700 rounded-xl overflow-hidden">
                 <button
                   onClick={() => handleLike(post._id, post.liked)}
-                  className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${
+                  className={`flex flex-1 justify-center cursor-pointer items-center gap-2 p-2 ${
                     post.liked ? "text-blue-400" : "cursor-pointer "
                   }`}
                 >
@@ -103,7 +103,7 @@ const RecentPosts = () => {
                   onClick={() => handleFavorite(post._id)}
                   className={`cursor-pointer  ${
                     post.favorite?.includes(user?.email)
-                      ? "text-green-600 flex   justify-center items-center gap-2 p-2"
+                      ? "text-green-600 flex flex-1  justify-center items-center gap-2 p-2 "
                       : "flex justify-center whitespace-nowrap items-center gap-2 p-2"
                   }`}
                 >
@@ -112,7 +112,7 @@ const RecentPosts = () => {
 
                 <Link
                   to={`/lesson-details/${post._id}`}
-                  className="flex justify-center items-center  gap-2 p-2"
+                  className="flex whitespace-nowrap leading-none justify-center flex-1 items-center  gap-2 p-2"
                 >
                   <div className="flex  gap-2 items-center  ">
                     <FaRegComment />
@@ -120,7 +120,7 @@ const RecentPosts = () => {
                   </div>
                 </Link>
 
-                <div className="flex justify-center items-center gap-2 p-2">
+                <div className="flex flex-1 justify-center items-center gap-2 p-2">
                   <FaShare /> Share
                 </div>
               </div>
