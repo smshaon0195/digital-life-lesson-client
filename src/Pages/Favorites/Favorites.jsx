@@ -51,7 +51,10 @@ const Favorites = () => {
       ) : (
         favoritePostsByUser.map((lesson) => {
           return (
-            <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white relative">
+            <div
+              key={lesson._id}
+              className="my-5 p-5 rounded-xl border-2 border-amber-100 relative"
+            >
               {/* ⋮ Edit */}
               <span className="absolute right-4 top-3 cursor-pointer">
                 <BsThreeDots />
@@ -92,7 +95,7 @@ const Favorites = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
+              <div className="grid grid-cols-4 mt-4 text-sm rounded-xl overflow-hidden">
                 <button
                   className={`flex justify-center items-center gap-2 p-2 ${
                     lesson.liked ? "text-blue-400" : ""

@@ -79,12 +79,12 @@ const LessonDetails = () => {
   };
 
   return (
-    <div className="md:flex w-[95%] text-black items-start gap-5 mx-auto p-4">
+    <div className="md:flex w-[95%]  items-start gap-5 mx-auto p-4">
       {/* Lesson */}
-      <div className="bg-white  md:w-7/12 rounded-xl shadow p-5">
+      <div className=" border-amber-50 shadow border md:w-7/12 rounded-xl shadow p-5">
         <div className="md:flex  p-3  items-center">
           <div className="flex-1 ">
-            <p className="text-gray-700 mb-4">{lesson.text}</p>
+            <p className=" mb-4">{lesson.text}</p>
           </div>
           <div className="flex-1  ">
             {lesson.postPhoto && (
@@ -101,7 +101,7 @@ const LessonDetails = () => {
       {/* Comments */}
       <div className="md:w-5/12 space-y-4 mt-5 md:mt-0">
         {/* Add comment */}
-        <div className="bg-white rounded-xl shadow p-5">
+        <div className="border border-amber-100 rounded-xl shadow p-5">
           <h3 className="font-semibold mb-2">Write a comment 💬</h3>
           <textarea
             rows="2"
@@ -125,10 +125,14 @@ const LessonDetails = () => {
           const comment = item.comment;
 
           return (
-            <div key={index} className="bg-gray-100 rounded-lg p-3 relative">
+            <div key={index} className=" border border-amber-100 rounded-lg p-3 relative">
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                  <img src={comment.userPhoto || "https://shorturl.at/UI6JP"} className="w-9 h-9 rounded-lg" alt="" />
+                  <img
+                    src={comment.userPhoto || "https://shorturl.at/UI6JP"}
+                    className="w-9 h-9 rounded-lg"
+                    alt=""
+                  />
                   <div>
                     <p className="font-semibold">{comment.userName || user.displayName}</p>
                     <p className="text-sm text-gray-500">{formatTime(comment.CreatedAt)}</p>

@@ -114,17 +114,17 @@ const AddLesson = () => {
   }
 
   return (
-    <div className=" bg-black text-white  py-6 px-4">
+    <div className="   py-6 px-4">
       <div className="max-w-2xl mx-auto">
         {/* ➕ Add Lesson */}
-        <div className="bg-black  text-white border-amber-100 border-2 rounded-2xl shadow p-6 mb-6">
+        <div className=" border-amber-100 border-2 rounded-2xl shadow p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">Share a Life Lesson 🌱</h2>
           <textarea
             rows="1"
             value={lessonText}
             onChange={(e) => setLessonText(e.target.value)}
             placeholder="Write your life lesson..."
-            className="w-full bg-gray-800 rounded-lg p-3"
+            className="w-full shadow-2xl rounded-lg p-3"
           />
           <label className="inline-block  mt-3 cursor-pointer text-sm text-amber-600 font-medium">
             Click & Upload a Image
@@ -135,7 +135,7 @@ const AddLesson = () => {
           {/* <img className="w-full h-50" src={uploadPhoto} alt="" /> */}
           <button
             onClick={handleAddLesson}
-            className="mt-4 gradient-btn  bg-amber-500 text-white px-6 py-2 rounded-lg"
+            className="mt-4 gradient-btn  bg-amber-500  px-6 py-2 rounded-lg"
           >
             Post Lesson
           </button>
@@ -146,7 +146,7 @@ const AddLesson = () => {
           {lessons.map((lesson) => (
             <div
               key={lesson._id}
-              className="bg-black bg-gray-800 text-white relative rounded-2xl shadow p-4"
+              className="  relative rounded-2xl border-amber-100 border-2 shadow p-4"
             >
               {/* ⋮ Edit (Owner Only) */}
               {lesson.email === user?.email && (
@@ -160,7 +160,7 @@ const AddLesson = () => {
 
               <div className="md:flex  p-3  items-center">
                 <div className="flex-1 ">
-                  <p className="text-white mb-4">{lesson.text}</p>
+                  <p className=" mb-4">{lesson.text}</p>
                 </div>
                 <div className="flex-1  ">
                   {lesson.postPhoto && (

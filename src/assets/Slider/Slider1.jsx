@@ -21,7 +21,7 @@ import img4 from "../../assets/Image/4.jpg";
 import img5 from "../../assets/Image/5.jpg";
 const Slider1 = () => {
   return (
-    <div className="w-full py-10 bg-black">
+    <div className="w-full py-10 border-b-2 border-gray-200">
       <Swiper
         effect={"coverflow"}
         grabCursor={true}

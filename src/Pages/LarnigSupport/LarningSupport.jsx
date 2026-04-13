@@ -25,19 +25,19 @@ const LarningSupport = () => {
   ];
 
   return (
-    <div className="bg-amber-100 py-20">
+    <div className=" py-20">
       <div className="w-[95%] mx-auto">
-        <h2 className="text-center text-3xl font-bold mb-10 text-black">I can help you with</h2>
+        <h2 className="text-center text-3xl font-bold mb-10 ">I can help you with</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-10 gap-5">
           {cards.map((card, index) => (
             <div
               key={index}
-              className="sm:p-5 p-3 text-center bg-white rounded-xl hover:shadow-lg transition"
+              className="sm:p-5 p-3 text-center border-2 border-amber-50 shadow-2xl rounded-xl hover:shadow-lg transition"
             >
               {card.icon}
 
-              <h3 className="sm:text-3xl text-xl font-bold text-black">{card.title}</h3>
+              <h3 className="sm:text-3xl text-xl font-bold ">{card.title}</h3>
 
               <p className="font-semibold text-gray-600 sm:my-3 my-1 text-sm sm:text-xl">
                 {card.description}

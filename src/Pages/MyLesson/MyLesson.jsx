@@ -86,7 +86,10 @@ const MyLesson = () => {
         <NoData> </NoData>
       ) : (
         lessons.map((lesson) => (
-          <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white relative">
+          <div
+            key={lesson._id}
+            className="my-5 p-5 rounded-xl shadow-2xl border-amber-100 border-2 relative"
+          >
             {/* ⋮ Edit */}
             <span
               onClick={() => setOpenMenuId(openMenuId === lesson._id ? null : lesson._id)}
@@ -165,7 +168,7 @@ const MyLesson = () => {
             {/* Post */}
             <div className="md:flex  p-3  items-center">
               <div className="flex-1 ">
-                <p className="text-white mb-4">{lesson.text}</p>
+                <p className=" mb-4">{lesson.text}</p>
               </div>
               <div className="flex-1  ">
                 {lesson.postPhoto && (
@@ -179,7 +182,7 @@ const MyLesson = () => {
             </div>
 
             {/* Actions */}
-            <div className="grid grid-cols-4 mt-4 gap-7 text-sm bg-gray-700 rounded-xl overflow-hidden">
+            <div className="grid grid-cols-4 mt-4 gap-7 text-sm rounded-xl overflow-hidden">
               <button
                 onClick={() => handleLike(lesson._id, lesson.liked)}
                 className={`flex justify-center items-center  gap-2 p-2 ${

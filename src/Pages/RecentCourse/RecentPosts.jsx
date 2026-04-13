@@ -46,7 +46,7 @@ const RecentPosts = () => {
       <div className="divParent   gap-7">
         {limitedPosts.map((post) => {
           return (
-            <div key={post._id} className="my-5 p-5  rounded-xl bg-gray-800 text-white relative">
+            <div key={post._id} className="my-5 p-5  rounded-xl shadow-2xl relative">
               {/* ⋮ Edit */}
               <span className="absolute right-4 top-3 cursor-pointer">
                 <BsThreeDots />
@@ -73,7 +73,7 @@ const RecentPosts = () => {
               {/* Post */}
               <div className="md:flex  p-3  items-center">
                 <div className="flex-1 ">
-                  <p className="text-white mb-4">{post.text}</p>
+                  <p className=" mb-4">{post.text}</p>
                 </div>
                 <div className="flex-1  ">
                   {post.postPhoto && (
@@ -87,7 +87,7 @@ const RecentPosts = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 sm:text-sm text-[12px] bg-gray-700 rounded-xl overflow-hidden">
+              <div className="grid grid-cols-4 mt-4 sm:text-sm text-[12px]   rounded-xl overflow-hidden">
                 <button
                   onClick={() => handleLike(post._id, post.liked)}
                   className={`flex flex-1 justify-center cursor-pointer items-center gap-2 p-2 ${

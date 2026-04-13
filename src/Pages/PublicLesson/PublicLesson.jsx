@@ -47,7 +47,7 @@ const PublicLesson = () => {
   return (
     <div className="max-w-2xl mx-auto mt-6">
       {lessons.map((lesson) => (
-        <div key={lesson._id} className="my-5 p-5 rounded-xl bg-gray-800 text-white">
+        <div key={lesson._id} className="my-5 p-5 shadow-2xl border border-amber-50 rounded-xl ">
           {/* User Info */}
           <div className="flex gap-3 items-center mb-3">
             <img
@@ -86,7 +86,7 @@ const PublicLesson = () => {
           </div>
 
           {/* Actions */}
-          <div className="grid grid-cols-4 mt-4 text-sm bg-gray-700 rounded-xl overflow-hidden">
+          <div className="grid grid-cols-4 mt-4 text-sm  rounded-xl overflow-hidden">
             <button
               onClick={() => handleLike(lesson._id, lesson.liked)}
               className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${

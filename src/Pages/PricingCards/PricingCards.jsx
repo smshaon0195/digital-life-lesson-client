@@ -29,7 +29,7 @@ const PricingCards = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 sm:py-20 py-8">
+    <div className="min-h-screen  flex items-center justify-center px-5 sm:py-20 py-8">
       <div className="max-w-6xl w-full text-center">
         {/* Title */}
         <h1 className="sm:text-4xl text-2xl md:text-5xl font-bold mb-4">
@@ -38,15 +38,15 @@ const PricingCards = () => {
         <p className="text-gray-400 sm:mb-12 mb-5">Choose the plan that’s right for you</p>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid  md:grid-cols-3 gap-8 ">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative rounded-2xl p-8 border transition-all duration-300
+              className={`relative  rounded-2xl p-8 border-2 shadow-2xl border-white transition-all duration-300
               ${
                 plan.active
-                  ? "bg-[#111] border-orange-400 shadow-[0_0_40px_rgba(255,165,0,0.4)] scale-105"
-                  : "bg-[#0f0f0f] border-gray-800"
+                  ? " border-orange-400 shadow-[0_0_40px_rgba(255,165,0,0.4)] scale-105"
+                  : " border-gray-800"
               }`}
             >
               {/* Badge */}
@@ -57,7 +57,7 @@ const PricingCards = () => {
               )}
 
               {/* Name */}
-              <h3 className={`text-xl mb-3 ${plan.active ? "text-orange-400" : "text-gray-300"}`}>
+              <h3 className={`text-xl mb-3 ${plan.active ? "text-orange-400" : "text-gray-400"}`}>
                 {plan.name}
               </h3>
 
@@ -68,7 +68,7 @@ const PricingCards = () => {
               </div>
 
               {/* Features */}
-              <ul className="mt-6 space-y-3 text-gray-300 text-left">
+              <ul className="mt-6 space-y-3 text-gray-400 text-left">
                 {plan.features.map((f, i) => (
                   <li key={i} className="flex gap-2 items-center">
                     <span className="text-green-400">✔</span>
