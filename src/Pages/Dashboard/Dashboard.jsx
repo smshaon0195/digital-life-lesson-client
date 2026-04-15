@@ -40,13 +40,13 @@ const Dashboard = () => {
   const planName = usersPaymentDetails?.plan?.planName;
 
   return (
-    <div className="bg-gray-100 text-black min-h-screen top-15">
+    <div className=" min-h-screen top-15">
       {/* Header */}
-      <header className=" bg-white sticky text-black shadow ">
+      <header className="  sticky  shadow ">
         <div className=" text-center justify-between md:flex w-[95%] mx-auto items-center p-4">
-          <h1 className="text-xl font-bold">User Dashboard</h1>
+          <h1 className="text-xl font-bold">Wellcome your Dashboard</h1>
 
-          <div className="text-center border-amber-200 border-2 px-3 sm:border-0">
+          <div className="text-center border border-amber-200  px-3 sm:border-0">
             <h2 className="text-2xl font-bold">
               Wellcome <br />
               <span className="text-green-800 font-serif">❤️ {user.displayName} ❤️</span>{" "}
@@ -75,18 +75,18 @@ const Dashboard = () => {
           {/* Stats */}
           <section className="grid text-center w-[95%] mx-auto grid-cols-1 md:grid-cols-3 gap-4">
             <Link to={"/dashboard/my-Lesson"}>
-              <div className="bg-white text-black p-4 rounded shadow">
+              <div className=" p-4 rounded shadow-2xl">
                 <p>My Total Lessons</p>
                 <h2 className="text-2xl font-bold">{myPosts.length}</h2>
               </div>
             </Link>
             <Link to={"/dashboard/favorites"}>
-              <div className="bg-white p-4 rounded shadow">
+              <div className=" p-4 shadow-2xl rounded ">
                 <p>My Total Favorites</p>
                 <h2 className="text-2xl font-bold">{favoritePostsByUser.length || 0}</h2>
               </div>
             </Link>
-            <div className="bg-white p-4 rounded shadow">
+            <div className=" p-4 rounded shadow-2xl">
               <p>Recent Lessons</p>
               <h2 className="text-2xl font-bold">{posts.slice(0, 3).length}</h2>
             </div>

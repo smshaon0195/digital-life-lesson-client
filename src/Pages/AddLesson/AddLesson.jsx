@@ -226,7 +226,7 @@ const AddLesson = () => {
 
               <button
                 onClick={handleUpdateLesson}
-                className="bg-green-500 text-white px-4 py-1 rounded"
+                className="bg-green-400 text-white px-4 py-1 rounded"
               >
                 Save
               </button>

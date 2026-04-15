@@ -75,7 +75,7 @@ const MyLesson = () => {
 
   if (isLoading)
     return (
-      <p className="text-white">
+      <p className="">
         <Loding></Loding>
       </p>
     );
@@ -182,7 +182,7 @@ const MyLesson = () => {
             </div>
 
             {/* Actions */}
-            <div className="grid grid-cols-4 mt-4 gap-7 text-sm rounded-xl overflow-hidden">
+            <div className="flex justify-between text-sm">
               <button
                 onClick={() => handleLike(lesson._id, lesson.liked)}
                 className={`flex justify-center items-center  gap-2 p-2 ${
@@ -196,7 +196,7 @@ const MyLesson = () => {
                 <div
                   className={
                     lesson.favorite?.includes(user.email)
-                      ? "flex justify-center cursor-pointer items-center  p-2 text-green-600"
+                      ? "flex justify-center cursor-pointer items-center  p-2 text-green-400"
                       : "flex justify-center cursor-pointer items-center  p-2"
                   }
                 >

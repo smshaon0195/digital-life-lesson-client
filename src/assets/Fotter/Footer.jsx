@@ -41,7 +41,7 @@ const Footer = () => {
       </footer>
       <div className="siteRevarse mx-auto text-center">
         All Site Revarse in{" "}
-        <a className="text-green-600" href="">
+        <a target="_blank" className="text-green-600" href="https://www.facebook.com/md.shaon.hossen.bappi/">
           SM Shaon
         </a>{" "}
         @2026

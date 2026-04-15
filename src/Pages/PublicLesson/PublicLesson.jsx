@@ -86,7 +86,7 @@ const PublicLesson = () => {
           </div>
 
           {/* Actions */}
-          <div className="grid grid-cols-4 mt-4 text-sm  rounded-xl overflow-hidden">
+          <div className="flex justify-between text-sm ">
             <button
               onClick={() => handleLike(lesson._id, lesson.liked)}
               className={`flex justify-center cursor-pointer items-center gap-2 p-2 ${
@@ -100,7 +100,7 @@ const PublicLesson = () => {
               onClick={() => handleFavorite(lesson._id)}
               className={`cursor-pointer ${
                 lesson.favorite?.includes(user?.email)
-                  ? "text-green-600 flex justify-center items-center gap-2 p-2"
+                  ? "text-green-400 flex justify-center items-center gap-2 p-2"
                   : "flex justify-center items-center gap-2 p-2"
               }`}
             >

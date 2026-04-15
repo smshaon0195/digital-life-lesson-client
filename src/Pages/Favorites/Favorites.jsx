@@ -95,7 +95,7 @@ const Favorites = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 text-sm rounded-xl overflow-hidden">
+              <div className="flex justify-between text-sm">
                 <button
                   className={`flex justify-center items-center gap-2 p-2 ${
                     lesson.liked ? "text-blue-400" : ""

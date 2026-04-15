@@ -3,8 +3,8 @@ import Error from "./Error";
 
 const NoData = () => {
   return (
-    <div class="flex text-white items-center justify-center ">
-      <div class="text-center text-white max-w-md">
+    <div class="flex  items-center justify-center ">
+      <div class="text-center  max-w-md">
         <Error></Error>
         <h1 class="text-3xl font-bold  mb-2">No Data Found</h1>
         <p class=" mb-6">
