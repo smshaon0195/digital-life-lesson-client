@@ -114,7 +114,7 @@ const AddLesson = () => {
   }
 
   return (
-    <div className="   py-6 px-4">
+    <div className="  p-5 ">
       <div className="max-w-2xl mx-auto">
         {/* ➕ Add Lesson */}
         <div className=" border-amber-100 border-2 rounded-2xl shadow p-6 mb-6">

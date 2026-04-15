@@ -45,7 +45,7 @@ const PublicLesson = () => {
     return <Loding></Loding>;
   }
   return (
-    <div className="max-w-2xl mx-auto mt-6">
+    <div className="max-w-2xl p-5 mx-auto mt-6">
       {lessons.map((lesson) => (
         <div key={lesson._id} className="my-5 p-5 shadow-2xl border border-amber-50 rounded-xl ">
           {/* User Info */}

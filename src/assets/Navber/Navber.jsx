@@ -49,17 +49,15 @@ const Navber = () => {
   }, []);
 
   const nightDayHandle = () => {
-  const newTheme = theme === "light" ? "dark" : "light";
+    const newTheme = theme === "light" ? "dark" : "light";
 
-  setTheme(newTheme);
-  document
-    .querySelector("html")
-    .setAttribute("data-theme", newTheme);
+    setTheme(newTheme);
+    document.querySelector("html").setAttribute("data-theme", newTheme);
 
-  localStorage.setItem("theme", newTheme);
-};
+    localStorage.setItem("theme", newTheme);
+  };
   return (
-    <div className="sticky top-0 left-0 bg-base-100 shadow-sm w-full">
+    <div className="sticky z-50 top-0 bg-base-100 shadow-sm w-full">
       <div className="navbar w-[95%] mx-auto z-50">
         <div className="navbar-start ">
           <div className="dropdown">
@@ -102,7 +100,7 @@ const Navber = () => {
           <div className=" flex  ">
             <label className="swap swap-rotate">
               {/* this hidden checkbox controls the state */}
-              <input  checked={theme === "dark"} onChange={nightDayHandle} type="checkbox" />
+              <input checked={theme === "dark"} onChange={nightDayHandle} type="checkbox" />
 
               {/* sun icon */}
               <svg

@@ -42,11 +42,11 @@ const RecentPosts = () => {
   };
 
   return (
-    <div className="md:w-6/12  mx-auto">
+    <div className="md:w-6/12 p-5  mx-auto">
       <div className="divParent   gap-7">
         {limitedPosts.map((post) => {
           return (
-            <div key={post._id} className="my-5 p-5  rounded-xl shadow-2xl relative">
+            <div key={post._id} className="my-5 p-5 border-amber-100 border rounded-xl shadow-2xl relative">
               {/* ⋮ Edit */}
               <span className="absolute right-4 top-3 cursor-pointer">
                 <BsThreeDots />

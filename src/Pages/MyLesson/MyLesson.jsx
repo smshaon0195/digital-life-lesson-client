@@ -81,7 +81,7 @@ const MyLesson = () => {
     );
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl p-5 mx-auto">
       {lessons.length === 0 ? (
         <NoData> </NoData>
       ) : (
