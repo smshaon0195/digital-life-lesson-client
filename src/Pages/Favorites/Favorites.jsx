@@ -45,7 +45,7 @@ const Favorites = () => {
     lesson.favorite?.includes(user?.email),
   );
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl p-2 mx-auto">
       {favoritePostsByUser.length === 0 ? (
         <NoData />
       ) : (
@@ -53,7 +53,7 @@ const Favorites = () => {
           return (
             <div
               key={lesson._id}
-              className="my-5 p-5 rounded-xl border-2 border-amber-100 relative"
+              className="my-5 p-4 rounded-xl border-2 border-amber-100 relative"
             >
               {/* ⋮ Edit */}
               <span className="absolute right-4 top-3 cursor-pointer">
@@ -95,7 +95,7 @@ const Favorites = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm text-gray-500">
                 <button
                   className={`flex justify-center items-center gap-2 p-2 ${
                     lesson.liked ? "text-blue-400" : ""

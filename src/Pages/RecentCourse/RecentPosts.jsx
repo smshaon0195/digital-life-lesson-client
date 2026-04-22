@@ -42,11 +42,14 @@ const RecentPosts = () => {
   };
 
   return (
-    <div className="md:w-6/12 p-5  mx-auto">
-      <div className="divParent   gap-7">
+    <div className="w-[95%]  mx-auto">
+      <div className="divParent grid md:grid-cols-2 gap-x-20 gap-y-0">
         {limitedPosts.map((post) => {
           return (
-            <div key={post._id} className="my-5 p-5 border-amber-100 border rounded-xl shadow-2xl relative">
+            <div
+              key={post._id}
+              className="my-5 p-4 border-amber-100 border rounded-xl shadow-2xl relative"
+            >
               {/* ⋮ Edit */}
               <span className="absolute right-4 top-3 cursor-pointer">
                 <BsThreeDots />
@@ -71,9 +74,9 @@ const RecentPosts = () => {
               </div>
 
               {/* Post */}
-              <div className="md:flex  p-3  items-center">
+              <div className="md:flex items-center">
                 <div className="flex-1 ">
-                  <p className=" mb-4">{post.text}</p>
+                  <p className=" mb-4 ml-7">{post.text}</p>
                 </div>
                 <div className="flex-1  ">
                   {post.postPhoto && (
@@ -87,10 +90,10 @@ const RecentPosts = () => {
               </div>
 
               {/* Actions */}
-              <div className="grid grid-cols-4 mt-4 sm:text-sm text-[12px]   rounded-xl overflow-hidden">
+              <div className="flex justify-between text-sm text-gray-500">
                 <button
                   onClick={() => handleLike(post._id, post.liked)}
-                  className={`flex flex-1 justify-center cursor-pointer items-center gap-2 p-2 ${
+                  className={`flex flex-1 justify-center cursor-pointer items-center gap-2 ${
                     post.liked ? "text-blue-400" : "cursor-pointer "
                   }`}
                 >
@@ -101,10 +104,10 @@ const RecentPosts = () => {
 
                 <div
                   onClick={() => handleFavorite(post._id)}
-                  className={`cursor-pointer  ${
+                  className={`cursor-pointer gap-2  ${
                     post.favorite?.includes(user?.email)
-                      ? "text-green-600 flex flex-1  justify-center items-center gap-2 p-2 "
-                      : "flex justify-center whitespace-nowrap items-center gap-2 p-2"
+                      ? "text-green-600 flex flex-1  justify-center items-center "
+                      : "flex justify-center whitespace-nowrap items-center  "
                   }`}
                 >
                   ❤️ Favorite
@@ -112,7 +115,7 @@ const RecentPosts = () => {
 
                 <Link
                   to={`/lesson-details/${post._id}`}
-                  className="flex whitespace-nowrap leading-none justify-center flex-1 items-center  gap-2 p-2"
+                  className="flex whitespace-nowrap leading-none justify-center flex-1 items-center  gap-2 "
                 >
                   <div className="flex  gap-2 items-center  ">
                     <FaRegComment />
@@ -120,7 +123,7 @@ const RecentPosts = () => {
                   </div>
                 </Link>
 
-                <div className="flex flex-1 justify-center items-center gap-2 p-2">
+                <div className="flex flex-1 justify-center items-center gap-2 ">
                   <FaShare /> Share
                 </div>
               </div>

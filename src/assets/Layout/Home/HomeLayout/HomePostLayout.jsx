@@ -11,10 +11,8 @@ const HomePostLayout = () => {
       <div className="font-bold  text-2xl text-center my-3">
         <h2>Recent Posts</h2>
       </div>
-      <div className="md:flex w-[95%] mx-auto gap-12">
-        <LeftSideBar></LeftSideBar>
+      <div>
         <RecentPosts></RecentPosts>
-        <RightSiderBar></RightSiderBar>
       </div>
     </div>
   );

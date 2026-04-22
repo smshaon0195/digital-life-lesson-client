@@ -81,14 +81,14 @@ const MyLesson = () => {
     );
 
   return (
-    <div className="max-w-2xl p-5 mx-auto">
+    <div className="divParent grid md:grid-cols-2 gap-x-20 gap-y-0 w-[95%] mx-auto">
       {lessons.length === 0 ? (
         <NoData> </NoData>
       ) : (
         lessons.map((lesson) => (
           <div
             key={lesson._id}
-            className="my-5 p-5 rounded-xl shadow-2xl border-amber-100 border-2 relative"
+            className="my-5 p-4 rounded-xl shadow-2xl border-amber-100 border-2 relative"
           >
             {/* ⋮ Edit */}
             <span
@@ -182,7 +182,7 @@ const MyLesson = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm text-gray-500">
               <button
                 onClick={() => handleLike(lesson._id, lesson.liked)}
                 className={`flex justify-center items-center  gap-2 p-2 ${

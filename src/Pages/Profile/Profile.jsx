@@ -117,12 +117,12 @@ const Profile = () => {
     );
 
   return (
-    <div className="min-h-screen text-blue-800 bg-gradient-to-br from-amber-50 to-gray-100 flex justify-center items-center p-4">
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Profile Settings</h2>
+    <div className="min-h-screen   flex justify-center items-center p-4">
+      <div className="w-full max-w-3xl rounded-2xl border-amber-100 border shadow-lg p-8">
+        <h2 className="text-3xl font-bold mb-8 text-center ">Profile Settings</h2>
 
         {/* Profile Header */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
+        <div className="flex flex-col  md:flex-row items-center gap-6 mb-10">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-amber-400">
             <img
               src={profile?.photoURL || profileImage || "https://shorturl.at/UI6JP"}
@@ -161,7 +161,7 @@ const Profile = () => {
               type="email"
               value={formData.email}
               disabled
-              className="w-full mt-1 border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
+              className="w-full mt-1 border rounded-lg px-3 py-2 cursor-not-allowed"
             />
           </div>
 
