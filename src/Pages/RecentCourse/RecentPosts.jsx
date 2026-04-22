@@ -90,14 +90,14 @@ const RecentPosts = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex justify-between text-sm text-gray-500">
+              <div className="flex  justify-between text-sm text-gray-500">
                 <button
                   onClick={() => handleLike(post._id, post.liked)}
-                  className={`flex flex-1 justify-center cursor-pointer items-center gap-2 ${
+                  className={`flex justify-center cursor-pointer items-center  ${
                     post.liked ? "text-blue-400" : "cursor-pointer "
                   }`}
                 >
-                  <div className="whitespace-nowrap flex items-center">
+                  <div className=" flex gap-2 items-center">
                     <AiOutlineLike /> Like ({post.likes})
                   </div>
                 </button>
@@ -106,8 +106,8 @@ const RecentPosts = () => {
                   onClick={() => handleFavorite(post._id)}
                   className={`cursor-pointer gap-2  ${
                     post.favorite?.includes(user?.email)
-                      ? "text-green-600 flex flex-1  justify-center items-center "
-                      : "flex justify-center whitespace-nowrap items-center  "
+                      ? "flex justify-center cursor-pointer items-center  p-2 text-green-400"
+                      : "flex justify-center cursor-pointer items-center  p-2 "
                   }`}
                 >
                   ❤️ Favorite
@@ -115,7 +115,7 @@ const RecentPosts = () => {
 
                 <Link
                   to={`/lesson-details/${post._id}`}
-                  className="flex whitespace-nowrap leading-none justify-center flex-1 items-center  gap-2 "
+                  className="flex justify-center  cursor-pointer items-center gap-2 p-2 "
                 >
                   <div className="flex  gap-2 items-center  ">
                     <FaRegComment />
@@ -123,7 +123,7 @@ const RecentPosts = () => {
                   </div>
                 </Link>
 
-                <div className="flex flex-1 justify-center items-center gap-2 ">
+                <div className="flex cursor-pointer justify-center  items-center gap-2 p-2">
                   <FaShare /> Share
                 </div>
               </div>
